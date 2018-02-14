@@ -1,16 +1,16 @@
 package geom
 
-// A Point represents a single point.
+// 一个Point代表一个点
 type Point struct {
 	geom0
 }
 
-// NewPoint allocates a new Point with layout l and all values zero.
+// NewPoint 函数根据视图分配一个新点，全部为0值
 func NewPoint(l Layout) *Point {
 	return NewPointFlat(l, make([]float64, l.Stride()))
 }
 
-// NewPointFlat allocates a new Point with layout l and flat coordinates flatCoords.
+// NewPointFlat 函数根据视图 l 和传入的点坐标数组分配一个点
 func NewPointFlat(l Layout, flatCoords []float64) *Point {
 	p := new(Point)
 	p.layout = l
@@ -18,23 +18,28 @@ func NewPointFlat(l Layout, flatCoords []float64) *Point {
 	p.flatCoords = flatCoords
 	return p
 }
+/**
+*------------------------------
+*				Point（点）相关的方法
+*---------------------------------
+*/
 
-// Area returns p's area, i.e. zero.
+// Area 函数返回点的面积，只为零
 func (p *Point) Area() float64 {
 	return 0
 }
 
-// Clone returns a copy of p that does not alias p.
+// Clone 函数返回一个点的拷贝，这个不是别名
 func (p *Point) Clone() *Point {
 	return deriveClonePoint(p)
 }
 
-// Empty returns false.
+// Empty 函数返回false
 func (p *Point) Empty() bool {
 	return false
 }
 
-// Length returns the length of p, i.e. zero.
+// Length 函数返回点的长度，只为零
 func (p *Point) Length() float64 {
 	return 0
 }
@@ -45,7 +50,7 @@ func (p *Point) MustSetCoords(coords Coord) *Point {
 	return p
 }
 
-// SetCoords sets the coordinates of p.
+// SetCoords 函数传入一个坐标Coord,设置点坐标
 func (p *Point) SetCoords(coords Coord) (*Point, error) {
 	if err := p.setCoords(coords); err != nil {
 		return nil, err
@@ -53,28 +58,28 @@ func (p *Point) SetCoords(coords Coord) (*Point, error) {
 	return p, nil
 }
 
-// SetSRID sets the SRID of p.
+// SetSRID 设置点的SRID参考
 func (p *Point) SetSRID(srid int) *Point {
 	p.srid = srid
 	return p
 }
 
-// Swap swaps the values of p and p2.
+// Swap 函数交换两个点
 func (p *Point) Swap(p2 *Point) {
 	*p, *p2 = *p2, *p
 }
 
-// X returns p's X-coordinate.
+// X 函数返回点的x坐标
 func (p *Point) X() float64 {
 	return p.flatCoords[0]
 }
 
-// Y returns p's Y-coordinate.
+// Y 函数返回点的y坐标
 func (p *Point) Y() float64 {
 	return p.flatCoords[1]
 }
 
-// Z returns p's Z-coordinate, or zero if p has no Z-coordinate.
+// Z 返回点的Z坐标，如果点所属的视图类型不具有z轴返回0
 func (p *Point) Z() float64 {
 	zIndex := p.layout.ZIndex()
 	if zIndex == -1 {
@@ -83,7 +88,7 @@ func (p *Point) Z() float64 {
 	return p.flatCoords[zIndex]
 }
 
-// M returns p's M-coordinate, or zero if p has no M-coordinate.
+// M 函数返回点的m属性值，如果点所属的的视图类型不具有 m 轴返回0
 func (p *Point) M() float64 {
 	mIndex := p.layout.MIndex()
 	if mIndex == -1 {
