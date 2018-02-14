@@ -1,18 +1,16 @@
 package geom
 
-// A LineString represents a single, unbroken line, linearly interpreted
-// between zero or more control points.
+// LineString 代表了单线类型
 type LineString struct {
 	geom1
 }
 
-// NewLineString returns a new LineString with layout l and no control points.
+// NewLineString 分配了一个没有控制点并且符合Layout的 Linestring
 func NewLineString(l Layout) *LineString {
 	return NewLineStringFlat(l, nil)
 }
 
-// NewLineStringFlat returns a new LineString with layout l and control points
-// flatCoords.
+// NewLineStringFlat 分配了一个有控制点（flatCoords）并且符合Layout的 Linestring
 func NewLineStringFlat(layout Layout, flatCoords []float64) *LineString {
 	ls := new(LineString)
 	ls.layout = layout
@@ -21,17 +19,23 @@ func NewLineStringFlat(layout Layout, flatCoords []float64) *LineString {
 	return ls
 }
 
-// Area returns the length of ls, i.e. zero.
+/**
+*------------------------------
+*				Point（点）相关的方法
+*---------------------------------
+*/
+
+// Area方法 返回 Linestring的面积
 func (ls *LineString) Area() float64 {
 	return 0
 }
 
-// Clone returns a copy of ls that does not alias ls.
+// Clone方法 返回一个Linestring的拷贝，这个不是ls的别名
 func (ls *LineString) Clone() *LineString {
 	return deriveCloneLineString(ls)
 }
 
-// Empty returns false.
+// Empty方法 返回false
 func (ls *LineString) Empty() bool {
 	return false
 }
@@ -67,18 +71,18 @@ func (ls *LineString) Interpolate(val float64, dim int) (int, float64) {
 	return low, (val - val0) / (val1 - val0)
 }
 
-// Length returns the length of ls.
+// Length 返回 Linestring 的长度
 func (ls *LineString) Length() float64 {
 	return length1(ls.flatCoords, 0, len(ls.flatCoords), ls.stride)
 }
 
-// MustSetCoords is like SetCoords but it panics on any error.
+// MustSetCoords方法 设置Linestring的控制点，但是有任何 ERROR 都会抛出
 func (ls *LineString) MustSetCoords(coords []Coord) *LineString {
 	Must(ls.SetCoords(coords))
 	return ls
 }
 
-// SetCoords sets the coordinates of ls.
+// SetCoords方法 为Linestring 设置控制点
 func (ls *LineString) SetCoords(coords []Coord) (*LineString, error) {
 	if err := ls.setCoords(coords); err != nil {
 		return nil, err
@@ -86,19 +90,18 @@ func (ls *LineString) SetCoords(coords []Coord) (*LineString, error) {
 	return ls, nil
 }
 
-// SetSRID sets the SRID of ls.
+// SetSRID方法 设置Linestring的 坐标系参考
 func (ls *LineString) SetSRID(srid int) *LineString {
 	ls.srid = srid
 	return ls
 }
 
-// SubLineString returns a LineString from starts at index start and stops at
-// index stop of ls. The returned LineString aliases ls.
+// SubLineString方法返回一个开始和结束点相同的 Linestring. 返回的Linestring 替代了 ls
 func (ls *LineString) SubLineString(start, stop int) *LineString {
 	return NewLineStringFlat(ls.layout, ls.flatCoords[start*ls.stride:stop*ls.stride])
 }
 
-// Swap swaps the values of ls and ls2.
+// Swap方法 与参数传入的 Linestring 互换
 func (ls *LineString) Swap(ls2 *LineString) {
 	*ls, *ls2 = *ls2, *ls
 }

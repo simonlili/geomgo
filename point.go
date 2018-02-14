@@ -44,7 +44,7 @@ func (p *Point) Length() float64 {
 	return 0
 }
 
-// MustSetCoords is like SetCoords but panics on any error.
+// MustSetCoords方法 设置点的坐标，但是如果有任何错误都会抛出
 func (p *Point) MustSetCoords(coords Coord) *Point {
 	Must(p.SetCoords(coords))
 	return p
