@@ -1,7 +1,7 @@
 package sorting
 
 import (
-	"github.com/twpayne/go-geom"
+	"github.com/chengxiaoer/go-geom"
 )
 
 // FlatCoord is a sort.Interface implementation that will result in sorting the wrapped coords based on the

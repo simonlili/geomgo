@@ -9,8 +9,8 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/xy/orientation"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/xy/orientation"
 )
 
 // dpSafeEpsilon is the value which is safely greater than the

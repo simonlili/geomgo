@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/xy"
-	"github.com/twpayne/go-geom/xy/internal"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/xy"
+	"github.com/chengxiaoer/go-geom/xy/internal"
 )
 
 func TestCentroid(t *testing.T) {

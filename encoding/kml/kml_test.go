@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/twpayne/go-geom"
+	"github.com/chengxiaoer/go-geom"
 )
 
 func Test(t *testing.T) {

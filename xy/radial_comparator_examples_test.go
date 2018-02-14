@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/xy"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/xy"
 )
 
 func ExampleNewRadialSorting() {

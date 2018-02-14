@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/xy/internal"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/xy/internal"
 )
 
 func TestBasicStackFunctionality(t *testing.T) {

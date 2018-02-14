@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/xy"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/xy"
 )
 
 func TestPointCentroidCalculator_GetCentroid_NoCoordsAdded(t *testing.T) {

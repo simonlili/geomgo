@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/d4l3k/messagediff"
-	"github.com/twpayne/go-geom"
+	"github.com/chengxiaoer/go-geom"
 )
 
 func TestGeometryDecode_NilCoordinates(t *testing.T) {

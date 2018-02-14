@@ -96,8 +96,8 @@ def main(argv):
     print >>f, '//go:generate python generate-random.py'
     print >>f
     print >>f, 'import ('
-    print >>f, '\t"github.com/twpayne/go-geom"'
-    print >>f, '\t"github.com/twpayne/go-geom/internal/geomtest"'
+    print >>f, '\t"github.com/chengxiaoer/go-geom"'
+    print >>f, '\t"github.com/chengxiaoer/go-geom/internal/geomtest"'
     print >>f, ')'
     print >>f
     print >>f, '// Random is a collection of randomly-generated test data.'

@@ -6,8 +6,8 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/encoding/ewkb"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/encoding/ewkb"
 )
 
 // Encode encodes an arbitrary geometry to a string.

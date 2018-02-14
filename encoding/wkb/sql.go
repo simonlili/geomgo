@@ -5,8 +5,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/encoding/wkbcommon"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/encoding/wkbcommon"
 )
 
 // ErrExpectedByteSlice is returned when a []byte is expected.

@@ -6,9 +6,9 @@ import (
 
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/encoding/ewkb"
-	"github.com/twpayne/go-geom/internal/geomtest"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/encoding/ewkb"
+	"github.com/chengxiaoer/go-geom/internal/geomtest"
 )
 
 func Example_scan() {

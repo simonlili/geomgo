@@ -1,8 +1,8 @@
 package xy
 
 import (
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/xy/internal"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/xy/internal"
 )
 
 // LinesCentroid computes the centroid of all the LineStrings provided as arguments.

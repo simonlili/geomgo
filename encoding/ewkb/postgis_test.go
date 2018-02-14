@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	_ "github.com/lib/pq"
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/encoding/ewkb"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/encoding/ewkb"
 )
 
 func TestPostGIS(t *testing.T) {

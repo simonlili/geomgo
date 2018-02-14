@@ -10,7 +10,7 @@ go:
 
 install:
         - go get github.com/d4l3k/messagediff
-        - go get github.com/twpayne/go-kml
+        - go get github.com/chengxiaoer/go-kml
         - go get gopkg.in/DATA-DOG/go-sqlmock.v1
 
 script: ./scripts/run-tests.sh

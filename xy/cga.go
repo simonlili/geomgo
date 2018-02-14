@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/twpayne/go-geom"
-	"github.com/twpayne/go-geom/bigxy"
-	"github.com/twpayne/go-geom/xy/internal"
-	"github.com/twpayne/go-geom/xy/internal/lineintersector"
-	"github.com/twpayne/go-geom/xy/orientation"
+	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/go-geom/bigxy"
+	"github.com/chengxiaoer/go-geom/xy/internal"
+	"github.com/chengxiaoer/go-geom/xy/internal/lineintersector"
+	"github.com/chengxiaoer/go-geom/xy/orientation"
 )
 
 // OrientationIndex returns the index of the direction of the point <code>q</code> relative to

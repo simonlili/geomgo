@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/twpayne/go-geom"
+	"github.com/chengxiaoer/go-geom"
 )
 
 func TestUniqueCoords(t *testing.T) {

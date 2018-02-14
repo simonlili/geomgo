@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/twpayne/go-geom"
+	"github.com/chengxiaoer/go-geom"
 )
 
 func test(t *testing.T, g geom.T, xdr []byte, ndr []byte) {
