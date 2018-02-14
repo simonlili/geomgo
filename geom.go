@@ -1,8 +1,7 @@
-// Package geom implements efficient geometry types for geospatial
-// applications.
+// Package geom 定义了有关地理信息有关的几何类型
 package geom
 
-//go:generate goderive .
+//go:生成目标
 
 import (
 	"errors"
@@ -10,28 +9,25 @@ import (
 	"math"
 )
 
-// A Layout describes the meaning of an N-dimensional coordinate. Layout(N) for
-// N > 4 is a valid layout, in which case the first dimensions are interpreted
-// to be X, Y, Z, and M and extra dimensions have no special meaning.  M values
-// are considered part of a linear referencing system (e.g. classical time or
-// distance along a path). 1-dimensional layouts are not supported.
+// 一个图层可以被维数来描述。N>4 也是一个有效的图层,维度使用x,y,z,m来描述。m是在经典维度描述中附加
+// 的一个值。m可以用描述以时间等其他属性。当前不支持描述一维
 type Layout int
 
 const (
-	// NoLayout is an unknown layout
+	// NoLayout是未知类型
 	NoLayout Layout = iota
-	// XY is a 2D layout (X and Y)
+	// XY是2D图层 (X and Y)
 	XY
-	// XYZ is 3D layout (X, Y, and Z)
+	// XYZ是3D图层 (X, Y, and Z)
 	XYZ
-	// XYM is a 2D layout with an M value
+	// XYM是在2D图层的基础上附加一个M值
 	XYM
-	// XYZM is a 3D layout with an M value
+	// XYZM是在3D图层的基础上附加一个M值
 	XYZM
 )
 
-// An ErrLayoutMismatch is returned when geometries with different layouts
-// cannot be combined.
+// ErrLayoutMismatch将会被返回，但图层的几何类型不正确时
+// 不能合并
 type ErrLayoutMismatch struct {
 	Got  Layout
 	Want Layout
@@ -41,8 +37,7 @@ func (e ErrLayoutMismatch) Error() string {
 	return fmt.Sprintf("geom: layout mismatch, got %s, want %s", e.Got, e.Want)
 }
 
-// An ErrStrideMismatch is returned when the stride does not match the expected
-// stride.
+// ErrStrideMismatch将会被返回当视图的维数与预期不符时
 type ErrStrideMismatch struct {
 	Got  int
 	Want int
@@ -52,15 +47,14 @@ func (e ErrStrideMismatch) Error() string {
 	return fmt.Sprintf("geom: stride mismatch, got %d, want %d", e.Got, e.Want)
 }
 
-// An ErrUnsupportedLayout is returned when the requested layout is not
-// supported.
+// 当请求的图层类型不支持时会返回ErrUnsupportedLayout
 type ErrUnsupportedLayout Layout
 
 func (e ErrUnsupportedLayout) Error() string {
 	return fmt.Sprintf("geom: unsupported layout %s", Layout(e))
 }
 
-// An ErrUnsupportedType is returned when the requested type is not supported.
+// 当请求的类型不支持时将会返回 ErrUnsupportedType
 type ErrUnsupportedType struct {
 	Value interface{}
 }
@@ -69,34 +63,38 @@ func (e ErrUnsupportedType) Error() string {
 	return fmt.Sprintf("geom: unsupported type %T", e.Value)
 }
 
-// A Coord represents an N-dimensional coordinate.
-type Coord []float64
+// 一个Coord 表示一个坐标
+type Coord []float64  //坐标
 
-// Clone returns a deep copy of c.
+/**
+*------------------------------
+*				Coord（坐标）相关的方法
+*---------------------------------
+*/
+// Clone 深度拷贝Coord
 func (c Coord) Clone() Coord {
 	return deriveCloneCoord(c)
 }
 
-// X returns the x coordinate of the coordinate. X is assumed to be the first
-// ordinate.
+// X 函数返回一个坐标的x坐标.
+// Coord的第一个值为x坐标
 func (c Coord) X() float64 {
 	return c[0]
 }
 
-// Y returns the x coordinate of the coordinate. Y is assumed to be the second
-// ordinate.
+// Y 函数返回一个坐标的y坐标
+// Coord的第二个值为y坐标
 func (c Coord) Y() float64 {
 	return c[1]
 }
 
-// Set copies the ordinate data from the other coord to this coord.
+// Set 函数复制一个坐标点
 func (c Coord) Set(other Coord) {
 	copy(c, other)
 }
 
-// Equal compares that all ordinates are the same in this and the other coords.
-// It is assumed that this coord and other coord both have the same (provided)
-// layout.
+// Equal 函数比较点的坐标与其他点的坐标是否相同
+// 点的坐标维数必须钧相同
 func (c Coord) Equal(layout Layout, other Coord) bool {
 
 	numOrds := len(c)
@@ -122,7 +120,7 @@ func (c Coord) Equal(layout Layout, other Coord) bool {
 	return true
 }
 
-// T is a generic interface implemented by all geometry types.
+// T 是所有几何类型都实现了的泛型接口
 type T interface {
 	Layout() Layout
 	Stride() int
@@ -132,9 +130,13 @@ type T interface {
 	Endss() [][]int
 	SRID() int
 }
+/**
+*------------------------------
+*				Layout（视图）相关的方法
+*---------------------------------
+*/
 
-// MIndex returns the index of the M dimension, or -1 if the l does not have an
-// M dimension.
+// MIndex 函数返回视图中附加值M的索引，不存在m附加值时返回-1
 func (l Layout) MIndex() int {
 	switch l {
 	case NoLayout, XY, XYZ:
@@ -148,7 +150,7 @@ func (l Layout) MIndex() int {
 	}
 }
 
-// Stride returns l's number of dimensions.
+// Stride 函数返回定义的视图的维数
 func (l Layout) Stride() int {
 	switch l {
 	case NoLayout:
@@ -166,7 +168,7 @@ func (l Layout) Stride() int {
 	}
 }
 
-// String returns a human-readable string representing l.
+// String 函数返回视图的类型字符串
 func (l Layout) String() string {
 	switch l {
 	case NoLayout:
@@ -184,8 +186,7 @@ func (l Layout) String() string {
 	}
 }
 
-// ZIndex returns the index of l's Z dimension, or -1 if l does not have a Z
-// dimension.
+// ZIndex 函数返回视图中 z 分量的索引，如果不存在时返回-1
 func (l Layout) ZIndex() int {
 	switch l {
 	case NoLayout, XY, XYM:
@@ -195,7 +196,7 @@ func (l Layout) ZIndex() int {
 	}
 }
 
-// Must panics if err is not nil, otherwise it returns g.
+// Must 函数 当err 不为nil时报错，否则返回泛型接口T
 func Must(g T, err error) T {
 	if err != nil {
 		panic(err)
