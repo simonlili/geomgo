@@ -21,7 +21,7 @@ func NewLineStringFlat(layout Layout, flatCoords []float64) *LineString {
 
 /**
 *------------------------------
-*				Point（点）相关的方法
+*				Linestring（点）相关的方法
 *---------------------------------
 */
 
