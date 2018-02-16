@@ -9,26 +9,20 @@ import (
 
 const piTimes2 = math.Pi * 2
 
-// Angle calculates the angle of the vector from p0 to p1,
-// relative to the positive X-axis.
-// The angle is normalized to be in the range [ -Pi, Pi ].
+// Angle函数 计算向量从po到p1的角度，此角度相当于x轴正方向，角度范围为[-180,180]
 func Angle(p0, p1 geom.Coord) float64 {
 	dx := p1[0] - p0[0]
 	dy := p1[1] - p0[1]
 	return math.Atan2(dy, dx)
 }
 
-// AngleFromOrigin calculates the angle that the vector from (0,0) to p,
-// relative to the positive X-axis.
-// The angle is normalized to be in the range ( -Pi, Pi ].
+// AngleFromOrigin函数 计算向量从（0，0）到p点的角度。此角度相对于x轴正方向,角度范围为（-180，180]
 func AngleFromOrigin(p geom.Coord) float64 {
 	return math.Atan2(p[1], p[0])
 }
 
-// IsAcute tests whether the angle between endpoint1-base-endpoint2 is acute.
-// An angle is acute if it is less than 90 degrees.
-//
-// Note: this implementation is not precise (deterministic) for angles very close to 90 degrees
+// IsAcute函数 测试一个角度是否为锐角
+// Note: 对于非常接近90度的角度来说，不太精确。
 func IsAcute(endpoint1, base, endpoint2 geom.Coord) bool {
 	// relies on fact that A dot B is positive iff A ang B is acute
 	dx0 := endpoint1[0] - base[0]
@@ -39,10 +33,8 @@ func IsAcute(endpoint1, base, endpoint2 geom.Coord) bool {
 	return dotprod > 0
 }
 
-// IsObtuse tests whether the angle between endpoint1-base-endpoint2 is obtuse.
-// An angle is obtuse if it is greater than 90 degrees.
-//
-// Note: this implementation is not precise (deterministic) for angles very close to 90 degrees
+// IsObtuse函数 测试一个角度是否为钝角
+// Note: 当角度非常接近90度时，不太准确
 func IsObtuse(endpoint1, base, endpoint2 geom.Coord) bool {
 	// relies on fact that A dot B is negative iff A ang B is obtuse
 	dx0 := endpoint1[0] - base[0]
@@ -53,12 +45,12 @@ func IsObtuse(endpoint1, base, endpoint2 geom.Coord) bool {
 	return dotprod < 0
 }
 
-// AngleBetween calculates the un-oriented smallest angle between two vectors.
-// The computed angle will be in the range [0, Pi).
+// AngleBetween函数 计算向量间的最小夹角
+//计算的角度范围在（0，180]之间
 //
-// Param tip1 - the tip of one vector
-// param tail - the tail of each vector
-// param tip2 - the tip of the other vector
+// Param tip1 - 向量的顶点
+// param tail - 每一个向量的尾部
+// param tip2 - 每一个向量的顶点
 func AngleBetween(tip1, tail, tip2 geom.Coord) float64 {
 	a1 := Angle(tail, tip1)
 	a2 := Angle(tail, tip2)
