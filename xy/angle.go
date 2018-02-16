@@ -58,11 +58,11 @@ func AngleBetween(tip1, tail, tip2 geom.Coord) float64 {
 	return Diff(a1, a2)
 }
 
-// AngleBetweenOriented calculates the oriented smallest angle between two vectors.
-// The computed angle will be in the range (-Pi, Pi].
-// A positive result corresponds to a counterclockwise (CCW) rotation from v1 to v2;
-// A negative result corresponds to a clockwise (CW) rotation;
-// A zero result corresponds to no rotation.
+// AngleBetweenOriented函数 计算计算两向量间的最小夹角（有两种结果）.
+// 计算的结果范围为（-180，180]
+// 一个正数结果对应了从v1向量到v2向量逆时针旋转
+// 负数结果对应了从v1到v2顺时针旋转所成的角
+// 0 表示两向量间不存在夹角（方向一致）
 func AngleBetweenOriented(tip1, tail, tip2 geom.Coord) float64 {
 	a1 := Angle(tail, tip1)
 	a2 := Angle(tail, tip2)
@@ -71,17 +71,15 @@ func AngleBetweenOriented(tip1, tail, tip2 geom.Coord) float64 {
 	return Normalize(angDel)
 }
 
-// InteriorAngle cmputes the interior angle between two segments of a ring. The ring is
-// assumed to be oriented in a clockwise direction. The computed angle will be
-// in the range [0, 2Pi]
+// InteriorAngle函数 计算环的两个部分之间的内角。
+// 以顺时针为正向,计算结果的范围为 [0, 2Pi]
 func InteriorAngle(p0, p1, p2 geom.Coord) float64 {
 	anglePrev := Angle(p1, p0)
 	angleNext := Angle(p1, p2)
 	return math.Abs(angleNext - anglePrev)
 }
 
-// AngleOrientation returns whether an angle must turn clockwise or counterclockwise
-// overlap another angle.
+// AngleOrientation函数 一个角度是否必须顺时针或逆时针旋转另一个角度
 func AngleOrientation(ang1, ang2 float64) orientation.Type {
 	crossproduct := math.Sin(ang2 - ang1)
 
@@ -95,8 +93,7 @@ func AngleOrientation(ang1, ang2 float64) orientation.Type {
 	}
 }
 
-// Normalize computes the normalized value of an angle, which is the
-// equivalent angle in the range ( -Pi, Pi ].
+// Normalize函数 计算一个角的归一化值，它是在（-180，180]范围内的等效角
 func Normalize(angle float64) float64 {
 	for angle > math.Pi {
 		angle -= piTimes2
@@ -107,8 +104,7 @@ func Normalize(angle float64) float64 {
 	return angle
 }
 
-// NormalizePositive computes the normalized positive value of an angle, which is the
-// equivalent angle in the range [ 0, 2*Pi ).
+// NormalizePositive函数 计算一个角的归一化值，它是在[0,360]范围内的等效角
 // E.g.:
 // * normalizePositive(0.0) = 0.0
 // * normalizePositive(-PI) = PI
@@ -125,6 +121,7 @@ func NormalizePositive(angle float64) float64 {
 			angle += piTimes2
 		}
 		// in case round-off error bumps the value over
+		// 舍去误差使值超过
 		if angle >= piTimes2 {
 			angle = 0.0
 		}
@@ -133,6 +130,7 @@ func NormalizePositive(angle float64) float64 {
 			angle -= piTimes2
 		}
 		// in case round-off error bumps the value under
+		// 舍去误差使值小于
 		if angle < 0.0 {
 			angle = 0.0
 		}
@@ -140,10 +138,9 @@ func NormalizePositive(angle float64) float64 {
 	return angle
 }
 
-// Diff computes the un-oriented smallest difference between two angles.
-// The angles are assumed to be normalized to the range [-Pi, Pi].
-// The result will be in the range [0, Pi].
-//
+// Diff函数 计算非定向的两个向量的最小角度。
+// 假设角被归一化到范围[-π，π]。
+//结果将在[0,π]之间
 // Param ang1 - the angle of one vector (in [-Pi, Pi] )
 // Param ang2 - the angle of the other vector (in range [-Pi, Pi] )
 func Diff(ang1, ang2 float64) float64 {
