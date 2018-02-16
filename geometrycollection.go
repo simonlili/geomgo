@@ -1,30 +1,32 @@
 package geom
 
-// A GeometryCollection is a collection of arbitrary geometries with the same
-// SRID.
+// GeometryCollection是一个具有相同SRID的任意几何类型的集合
 type GeometryCollection struct {
 	geoms []T
 	srid  int
 }
 
-// NewGeometryCollection returns a new GeometryCollection with the specified
-// geometries.
+// NewGeometryCollection函数 创建一个明确规定的GeometryCollection
 func NewGeometryCollection() *GeometryCollection {
 	return &GeometryCollection{}
 }
 
-// Geom returns the ith geometry in gc.
+/**
+*------------------------------
+*				GeometryCollection（几何图像集合）相关的方法
+*---------------------------------
+*/
+// Geom方法 返回指定索引的几何图像
 func (gc *GeometryCollection) Geom(i int) T {
 	return gc.geoms[i]
 }
 
-// Geoms returns the geometries in gc.
+// Geoms方法 返回所有的几何图像
 func (gc *GeometryCollection) Geoms() []T {
 	return gc.geoms
 }
 
-// Layout returns the smallest layout that covers all of the layouts in gc's
-// geometries.
+// Layout方法 返回最小的视图，在所有几何图形中
 func (gc *GeometryCollection) Layout() Layout {
 	maxLayout := NoLayout
 	for _, g := range gc.geoms {
@@ -50,12 +52,12 @@ func (gc *GeometryCollection) Layout() Layout {
 	return maxLayout
 }
 
-// NumGeoms returns the number of geometries in gc.
+// NumGeoms方法 返回gc中几何图形的数目
 func (gc *GeometryCollection) NumGeoms() int {
 	return len(gc.geoms)
 }
 
-// Stride returns the stride of gc's layout.
+// Stride方法 返回gc中图形的视图维数
 func (gc *GeometryCollection) Stride() int {
 	return gc.Layout().Stride()
 }
@@ -70,12 +72,12 @@ func (gc *GeometryCollection) Bounds() *Bounds {
 	return b
 }
 
-// Empty returns true if the collection is empty.
+// Empty方法 检测集合是否为空，为空时返回true
 func (gc *GeometryCollection) Empty() bool {
 	return len(gc.geoms) == 0
 }
 
-// FlatCoords panics.
+// FlatCoords方法 坐标报错
 func (*GeometryCollection) FlatCoords() []float64 {
 	panic("FlatCoords() called on a GeometryCollection")
 }
@@ -90,12 +92,12 @@ func (*GeometryCollection) Endss() [][]int {
 	panic("Endss() called on a GeometryCollection")
 }
 
-// SRID returns gc's SRID.
+// SRID方法 获取gc的坐标系参考
 func (gc *GeometryCollection) SRID() int {
 	return gc.srid
 }
 
-// MustPush pushes gs to gc. It panics on any error.
+// MustPush方法 向集合中添加几何图形，如果有错误均将抛出
 func (gc *GeometryCollection) MustPush(gs ...T) *GeometryCollection {
 	if err := gc.Push(gs...); err != nil {
 		panic(err)
@@ -103,13 +105,13 @@ func (gc *GeometryCollection) MustPush(gs ...T) *GeometryCollection {
 	return gc
 }
 
-// Push appends geometries.
+// Push方法 向集合中添加几何元素
 func (gc *GeometryCollection) Push(gs ...T) error {
 	gc.geoms = append(gc.geoms, gs...)
 	return nil
 }
 
-// SetSRID sets gc's SRID and the SRID of all its elements.
+// SetSRID方法 设置集合的坐标系参考，这个是集合的基础属性
 func (gc *GeometryCollection) SetSRID(srid int) *GeometryCollection {
 	gc.srid = srid
 	return gc
