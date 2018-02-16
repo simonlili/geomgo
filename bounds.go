@@ -4,14 +4,14 @@ import (
 	"math"
 )
 
-// A Bounds represents a multi-dimensional bounding box.
+// A Bounds 表示多维边界框
 type Bounds struct {
 	layout Layout
 	min    Coord
 	max    Coord
 }
 
-// NewBounds creates a new Bounds.
+// NewBounds函数 创建一个边界
 func NewBounds(layout Layout) *Bounds {
 	stride := layout.Stride()
 	min, max := make(Coord, stride), make(Coord, stride)
@@ -25,7 +25,13 @@ func NewBounds(layout Layout) *Bounds {
 	}
 }
 
-// Clone returns a deep copy of b.
+/**
+*------------------------------
+*				LinearRing（线环）相关的方法
+*---------------------------------
+*/
+
+// Clone方法 深度拷贝一个Bounds
 func (b *Bounds) Clone() *Bounds {
 	return deriveCloneBounds(b)
 }
@@ -39,7 +45,7 @@ func (b *Bounds) Extend(g T) *Bounds {
 	return b.extendFlatCoords(g.FlatCoords(), 0, len(g.FlatCoords()), g.Stride())
 }
 
-// IsEmpty returns true if b is empty.
+// IsEmpty方法 检测边界是否为空
 func (b *Bounds) IsEmpty() bool {
 	for i, stride := 0, b.layout.Stride(); i < stride; i++ {
 		if b.max[i] < b.min[i] {
@@ -49,22 +55,22 @@ func (b *Bounds) IsEmpty() bool {
 	return false
 }
 
-// Layout returns b's layout.
+// Layout方法 返回边界的视图布局
 func (b *Bounds) Layout() Layout {
 	return b.layout
 }
 
-// Max returns the maximum value in dimension dim.
+// Max方法 获取维数中的最大值
 func (b *Bounds) Max(dim int) float64 {
 	return b.max[dim]
 }
 
-// Min returns the minimum value in dimension dim.
+// Min方法 获取维数中的最小值
 func (b *Bounds) Min(dim int) float64 {
 	return b.min[dim]
 }
 
-// Overlaps returns true if b overlaps b2 in layout.
+// Overlaps方法 检测本对象是否覆盖传入的边界
 func (b *Bounds) Overlaps(layout Layout, b2 *Bounds) bool {
 	for i, stride := 0, layout.Stride(); i < stride; i++ {
 		if b.min[i] > b2.max[i] || b.max[i] < b2.min[i] {
@@ -74,9 +80,9 @@ func (b *Bounds) Overlaps(layout Layout, b2 *Bounds) bool {
 	return true
 }
 
-// Set sets the minimum and maximum values. args must be an even number of
-// values: the first half are the minimum values for each dimension and the
-// second half are the maximum values for each dimension.
+// Set方法 设置最小值和最大值.参数必须是一个偶数值
+//第一部分为最小值
+//第二部分为最大值
 func (b *Bounds) Set(args ...float64) *Bounds {
 	if len(args)&1 != 0 {
 		panic("geom: even number of arguments required")
@@ -89,7 +95,7 @@ func (b *Bounds) Set(args ...float64) *Bounds {
 	return b
 }
 
-// SetCoords sets the minimum and maximum values of the Bounds.
+// SetCoords方法 设置边界的最大坐标范围，与最小坐标范围
 func (b *Bounds) SetCoords(min, max Coord) *Bounds {
 	b.min = Coord(make([]float64, b.layout.Stride()))
 	b.max = Coord(make([]float64, b.layout.Stride()))
@@ -100,7 +106,7 @@ func (b *Bounds) SetCoords(min, max Coord) *Bounds {
 	return b
 }
 
-// OverlapsPoint determines if the bounding box overlaps the point (point is within or on the border of the bounds)
+// OverlapsPoint方法 点是否在边界框上（点在边界的边界内或边界上）
 func (b *Bounds) OverlapsPoint(layout Layout, point Coord) bool {
 	for i, stride := 0, layout.Stride(); i < stride; i++ {
 		if b.min[i] > point[i] || b.max[i] < point[i] {
