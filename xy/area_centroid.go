@@ -1,5 +1,5 @@
+// 定义了几何图形质心计算相关函数
 package xy
-
 import (
 	"math"
 
@@ -7,19 +7,18 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/internal"
 )
 
-// PolygonsCentroid computes the centroid of an area geometry. (Polygon)
+// PolygonsCentroid函数 计算一个多边形的几何中心
 //
-// Algorithm
-// Based on the usual algorithm for calculating the centroid as a weighted sum of the centroids
-// of a decomposition of the area into (possibly overlapping) triangles.
+// 算法：
+// 基于通常的算法计算的质心作为一个区域的质心加权分解成三角形（可能有重叠）。
 //
-// The algorithm has been extended to handle holes and multi-polygons.
+// 该算法已扩展到处理多个多边形的孔。
 //
-// See http://www.faqs.org/faqs/graphics/algorithms-faq/ for further details of the basic approach.
+// See http://www.faqs.org/faqs/graphics/algorithms-faq/ for 具体细节关于这一基本算法.
 //
-// The code has also be extended to handle degenerate (zero-area) polygons.
+// 该代码还扩展到处理退化（零面积）多边形
 //
-// In this case, the centroid of the line segments in the polygon will be returned.
+// 在这种情况下，将返回多边形中线段的质心。
 func PolygonsCentroid(polygon *geom.Polygon, extraPolys ...*geom.Polygon) (centroid geom.Coord) {
 
 	calc := NewAreaCentroidCalculator(polygon.Layout())
@@ -31,19 +30,18 @@ func PolygonsCentroid(polygon *geom.Polygon, extraPolys ...*geom.Polygon) (centr
 
 }
 
-// MultiPolygonCentroid computes the centroid of an area geometry. (MultiPolygon)
+// MultiPolygonCentroid 计算区域几何（多边形集合）的形心。（multipolygon）
 //
-// Algorithm
-// Based on the usual algorithm for calculating the centroid as a weighted sum of the centroids
-// of a decomposition of the area into (possibly overlapping) triangles.
+// 算法：
+// 基于通常的算法计算的质心作为一个区域的质心加权分解成三角形（可能有重叠）。
 //
-// The algorithm has been extended to handle holes and multi-polygons.
+// 该算法已扩展到处理多个多边形的孔。
 //
-// See http://www.faqs.org/faqs/graphics/algorithms-faq/ for further details of the basic approach.
+// See http://www.faqs.org/faqs/graphics/algorithms-faq/ for 具体细节关于这一基本算法.
 //
-// The code has also be extended to handle degenerate (zero-area) polygons.
+// 该代码还扩展到处理退化（零面积）多边形。
 //
-// In this case, the centroid of the line segments in the polygon will be returned.
+// 在这种情况下，将返回多边形中线段的质心。
 func MultiPolygonCentroid(polygon *geom.MultiPolygon) (centroid geom.Coord) {
 
 	calc := NewAreaCentroidCalculator(polygon.Layout())
@@ -54,25 +52,23 @@ func MultiPolygonCentroid(polygon *geom.MultiPolygon) (centroid geom.Coord) {
 
 }
 
-// AreaCentroidCalculator is the data structure that contains the centroid calculation
-// data.  This type cannot be used using its 0 values, it must be created
-// using NewAreaCentroid
+// AreaCentroidCalculator 是质心计算数据的数据结构。这类型无法使用其0的价值，
+//它必须使用newareacentroid函数来创建
 type AreaCentroidCalculator struct {
 	layout        geom.Layout
 	stride        int
 	basePt        geom.Coord
-	triangleCent3 geom.Coord // temporary variable to hold centroid of triangle
-	areasum2      float64    // Partial area sum
-	cg3           geom.Coord // partial centroid sum
+	triangleCent3 geom.Coord // 三角形质心的临时变量
+	areasum2      float64    // 局部地区和
+	cg3           geom.Coord // 部分质心的总和
 
-	centSum     geom.Coord // data for linear centroid computation, if needed
+	centSum     geom.Coord // 线性质心计算的数据，如果需要时存在
 	totalLength float64
 }
 
-// NewAreaCentroidCalculator creates a new instance of the calculator.
-// Once a calculator is created polygons can be added to it and the
-// GetCentroid method can be used at any point to get the current centroid
-// the centroid will naturally change each time a polygon is added
+// NewAreaCentroidCalculator函数 创建计算的新实例。
+// 创建计算器后，可以添加多边形。
+// GetCentroid方法 在任何点都可以得到当前的质心，每次添加多边形时，质心都会自然变化。
 func NewAreaCentroidCalculator(layout geom.Layout) *AreaCentroidCalculator {
 	return &AreaCentroidCalculator{
 		layout:        layout,
@@ -83,7 +79,13 @@ func NewAreaCentroidCalculator(layout geom.Layout) *AreaCentroidCalculator {
 	}
 }
 
-// GetCentroid obtains centroid currently calculated.  Returns a 0 coord if no geometries have been added
+
+/**
+*------------------------------
+*				AreaCentroidCalculator（质心计算器）相关的方法
+*---------------------------------
+*/
+// GetCentroid方法 获得当前计算的质心。返回一个0，如果没有几何已添加
 func (calc *AreaCentroidCalculator) GetCentroid() geom.Coord {
 	cent := geom.Coord(make([]float64, calc.stride))
 
@@ -95,14 +97,14 @@ func (calc *AreaCentroidCalculator) GetCentroid() geom.Coord {
 		cent[0] = calc.cg3[0] / 3 / calc.areasum2
 		cent[1] = calc.cg3[1] / 3 / calc.areasum2
 	} else {
-		// if polygon was degenerate, compute linear centroid instead
+		// 如果多边形退化，则计算线性质心。
 		cent[0] = calc.centSum[0] / calc.totalLength
 		cent[1] = calc.centSum[1] / calc.totalLength
 	}
 	return cent
 }
 
-// AddPolygon adds a polygon to the calculation.
+// AddPolygon方法 向计算器中添加多边形
 func (calc *AreaCentroidCalculator) AddPolygon(polygon *geom.Polygon) {
 
 	calc.setBasePoint(polygon.Coord(0))
@@ -164,8 +166,8 @@ func (calc *AreaCentroidCalculator) addTriangle(p0, p1, p2 geom.Coord, isPositiv
 	calc.areasum2 += sign * area2
 }
 
-// Returns three times the centroid of the triangle p1-p2-p3.
-// The factor of 3 is left in to permit division to be avoided until later.
+//centroid3函数 返回三角形p1-p2-p3质心的三倍
+// 3的系数留在允许除法直到以后避免。
 func centroid3(p1, p2, p3, c geom.Coord) {
 	c[0] = p1[0] + p2[0] + p3[0]
 	c[1] = p1[1] + p2[1] + p3[1]
@@ -177,12 +179,10 @@ func area2(p1, p2, p3 geom.Coord) float64 {
 	return (p2[0]-p1[0])*(p3[1]-p1[1]) - (p3[0]-p1[0])*(p2[1]-p1[1])
 }
 
-// Adds the linear segments defined by an array of coordinates
-// to the linear centroid accumulators.
-// This is done in case the polygon(s) have zero-area,
-// in which case the linear centroid is computed instead.
+//addLinearSegments方法 添加由线性坐标系的坐标阵列定义的线性段。
+// 这是在多边形具有零面积的情况下进行的，在这种情况下，计算线性质心。
 //
-// Param pts - an array of Coords
+// Param pts - 一个坐标数组
 func (calc *AreaCentroidCalculator) addLinearSegments(pts []float64) {
 	stride := calc.stride
 	for i := 0; i < len(pts)-stride; i += stride {
