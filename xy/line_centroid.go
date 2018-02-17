@@ -5,9 +5,9 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/internal"
 )
 
-// LinesCentroid computes the centroid of all the LineStrings provided as arguments.
+// LinesCentroid函数 计算参数传入的所有线状要素的质心
 //
-// Algorithm: Compute the average of the midpoints of all line segments weighted by the segment length.
+// Algorithm: 计算各线段的中点段长度加权平均。
 func LinesCentroid(line *geom.LineString, extraLines ...*geom.LineString) (centroid geom.Coord) {
 	calculator := NewLineCentroidCalculator(line.Layout())
 	calculator.AddLine(line)
@@ -19,9 +19,9 @@ func LinesCentroid(line *geom.LineString, extraLines ...*geom.LineString) (centr
 	return calculator.GetCentroid()
 }
 
-// LinearRingsCentroid computes the centroid of all the LinearRings provided as arguments.
+// LinearRingsCentroid函数 计算参数传入的所有线环的质心
 //
-// Algorithm: Compute the average of the midpoints of all line segments weighted by the segment length.
+// Algorithm: 计算各线段的中点段长度加权平均。
 func LinearRingsCentroid(line *geom.LinearRing, extraLines ...*geom.LinearRing) (centroid geom.Coord) {
 	calculator := NewLineCentroidCalculator(line.Layout())
 	calculator.AddLinearRing(line)
@@ -33,9 +33,9 @@ func LinearRingsCentroid(line *geom.LinearRing, extraLines ...*geom.LinearRing) 
 	return calculator.GetCentroid()
 }
 
-// MultiLineCentroid computes the centroid of the MultiLineString string
+// MultiLineCentroid函数 计算MultiLineString的质心
 //
-// Algorithm: Compute the average of the midpoints of all line segments weighted by the segment length.
+// Algorithm: 计算线段长度加权的所有线段的平均值。
 func MultiLineCentroid(line *geom.MultiLineString) (centroid geom.Coord) {
 	calculator := NewLineCentroidCalculator(line.Layout())
 	start := 0
@@ -47,9 +47,8 @@ func MultiLineCentroid(line *geom.MultiLineString) (centroid geom.Coord) {
 	return calculator.GetCentroid()
 }
 
-// LineCentroidCalculator is the data structure that contains the centroid calculation
-// data.  This type cannot be used using its 0 values, it must be created
-// using NewLineCentroid
+// LineCentroidCalculator结构 是质心计算的数据结构
+//  该结构没有默认零值,必须使用NewLineCentroid函数创建
 type LineCentroidCalculator struct {
 	layout      geom.Layout
 	stride      int
@@ -57,10 +56,10 @@ type LineCentroidCalculator struct {
 	totalLength float64
 }
 
-// NewLineCentroidCalculator creates a new instance of the calculator.
-// Once a calculator is created polygons, linestrings or linear rings can be added and the
-// GetCentroid method can be used at any point to get the current centroid
-// the centroid will naturally change each time a geometry is added
+// NewLineCentroidCalculator 创建计算器的新实例。
+// 计算器创建后多边形、线要素或线性环可以添加
+// GetCentroid方法 可以用于在任何点获得当前质心。
+// 每次添加几何体时，质心都会发生自然变化。
 func NewLineCentroidCalculator(layout geom.Layout) *LineCentroidCalculator {
 	return &LineCentroidCalculator{
 		layout:  layout,
@@ -69,7 +68,13 @@ func NewLineCentroidCalculator(layout geom.Layout) *LineCentroidCalculator {
 	}
 }
 
-// GetCentroid obtains centroid currently calculated.  Returns a 0 coord if no geometries have been added
+/**
+*------------------------------
+*				LineCentroidCalculator（线性质心计算器）相关的方法
+*---------------------------------
+*/
+
+// GetCentroid 获取质心，如果没有几何类型加入则返回0
 func (calc *LineCentroidCalculator) GetCentroid() geom.Coord {
 	cent := geom.Coord(make([]float64, calc.layout.Stride()))
 	cent[0] = calc.centSum[0] / calc.totalLength
@@ -77,7 +82,7 @@ func (calc *LineCentroidCalculator) GetCentroid() geom.Coord {
 	return cent
 }
 
-// AddPolygon adds a Polygon to the calculation.
+// AddPolygon方法 向计算器中添加多边形。
 func (calc *LineCentroidCalculator) AddPolygon(polygon *geom.Polygon) *LineCentroidCalculator {
 	for i := 0; i < polygon.NumLinearRings(); i++ {
 		calc.AddLinearRing(polygon.LinearRing(i))
@@ -86,14 +91,14 @@ func (calc *LineCentroidCalculator) AddPolygon(polygon *geom.Polygon) *LineCentr
 	return calc
 }
 
-// AddLine adds a LineString to the current calculation
+// AddLine方法 向计算器中添加线段
 func (calc *LineCentroidCalculator) AddLine(line *geom.LineString) *LineCentroidCalculator {
 	coords := line.FlatCoords()
 	calc.addLine(coords, 0, len(coords))
 	return calc
 }
 
-// AddLinearRing adds a LinearRing to the current calculation
+// AddLinearRing方法 向计算器中添加线环
 func (calc *LineCentroidCalculator) AddLinearRing(line *geom.LinearRing) *LineCentroidCalculator {
 	coords := line.FlatCoords()
 	calc.addLine(coords, 0, len(coords))
