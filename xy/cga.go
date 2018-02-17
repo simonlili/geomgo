@@ -1,5 +1,5 @@
-// Package xy contains low-level planar (xy) geographic functions.  The data can be of any dimension, however the first
-// two ordinates for each coordinate must be the x,y coordinates.  All other ordinates will be ignored.
+// Package xy 包含了低维平面（xy)相关的函数。
+// 数据可以是任意维度，但是每个坐标的前两个坐标必须是x，y坐标。所有其他坐标都将被忽略。
 package xy
 
 import (
@@ -13,21 +13,16 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/orientation"
 )
 
-// OrientationIndex returns the index of the direction of the point <code>q</code> relative to
-// a vector specified by <code>p1-p2</code>.
+// OrientationIndex函数 返回一个点关于一个特殊的向量指向的方向的索引
 //
-// vectorOrigin - the origin point of the vector
-// vectorEnd - the final point of the vector
-// point - the point to compute the direction to
+// vectorOrigin - 向量的起点
+// vectorEnd - 向量的终点
+// point - 计算方向的点
 func OrientationIndex(vectorOrigin, vectorEnd, point geom.Coord) orientation.Type {
 	return bigxy.OrientationIndex(vectorOrigin, vectorEnd, point)
 }
 
-// IsOnLine tests whether a point lies on the line segments defined by a list of
-// coordinates.
-//
-// Returns true if the point is a vertex of the line or lies in the interior
-//         of a line segment in the linestring
+// IsOnLine函数 检测一个点是否在由坐标数组构成的线段上，如果这个点是线段端点或者在线段上返回true
 func IsOnLine(layout geom.Layout, point geom.Coord, lineSegmentCoordinates []float64) bool {
 
 	stride := layout.Stride()
@@ -47,19 +42,15 @@ func IsOnLine(layout geom.Layout, point geom.Coord, lineSegmentCoordinates []flo
 	return false
 }
 
-// IsRingCounterClockwise computes whether a ring defined by an array of geom.Coords is
-// oriented counter-clockwise.
+// IsRingCounterClockwise函数 判断是否入的坐标是否能组成一个逆时针的线环。
 //
-// - The list of points is assumed to have the first and last points equal.
-// - This will handle coordinate lists which contain repeated points.
+// - 点的列表被假定为第一个和最后一个点相等。
+// - 这将会处理坐标列表里面重复的点
+// 此算法要求是能构成一个有效的环，无效的环可能导致结果错误.
 //
-// This algorithm is <b>only</b> guaranteed to work with valid rings. If the
-// ring is invalid (e.g. self-crosses or touches), the computed result may not
-// be correct.
-//
-// Param ring - an array of Coordinates forming a ring
-// Returns true if the ring is oriented counter-clockwise.
-// Panics if there are too few points to determine orientation (< 3)
+// Param ring - 形成环的坐标数组。
+// Returns 如果这个环是逆时针方向排列的，返回true
+// Panics 如果传入的点数目小于3，会报错
 func IsRingCounterClockwise(layout geom.Layout, ring []float64) bool {
 	stride := layout.Stride()
 
@@ -67,7 +58,7 @@ func IsRingCounterClockwise(layout geom.Layout, ring []float64) bool {
 	nOrds := len(ring) - stride
 	// # of points without closing endpoint
 	nPts := nOrds / stride
-	// sanity check
+	// 完整性检查
 	if nPts < 3 {
 		panic("Ring has fewer than 3 points, so orientation cannot be determined")
 	}
@@ -131,11 +122,11 @@ func IsRingCounterClockwise(layout geom.Layout, ring []float64) bool {
 	return isCCW
 }
 
-// DistanceFromPointToLine computes the distance from a point p to a line segment lineStart/lineEnd
+// DistanceFromPointToLine 计算一个点到一个线段的距离
 //
-// Note: NON-ROBUST!
+// Note: 非强健算法
 func DistanceFromPointToLine(p, lineStart, lineEnd geom.Coord) float64 {
-	// if start = end, then just compute distance to one of the endpoints
+	// 如果线段的起点与终点相同，则计算该点到终点的距离
 	if lineStart[0] == lineEnd[0] && lineStart[1] == lineEnd[1] {
 		return internal.Distance2D(p, lineStart)
 	}
@@ -175,7 +166,7 @@ func DistanceFromPointToLine(p, lineStart, lineEnd geom.Coord) float64 {
 	return math.Abs(s) * math.Sqrt(len2)
 }
 
-// PerpendicularDistanceFromPointToLine computes the perpendicular distance from a point p to the (infinite) line
+// PerpendicularDistanceFromPointToLine函数 计算从点P到直线的垂直距离。
 // containing the points lineStart/lineEnd
 func PerpendicularDistanceFromPointToLine(p, lineStart, lineEnd geom.Coord) float64 {
 	// use comp.graphics.algorithms Frequently Asked Questions method
@@ -193,15 +184,15 @@ func PerpendicularDistanceFromPointToLine(p, lineStart, lineEnd geom.Coord) floa
 	return distance
 }
 
-// DistanceFromPointToLineString computes the distance from a point to a sequence of line segments.
+// DistanceFromPointToLineString函数 计算点到线段序列的距离
 //
-// Param p - a point
-// Param line - a sequence of contiguous line segments defined by their vertices
+// Param p - 一个点
+// Param line - 由顶点定义的连续线段。
 func DistanceFromPointToLineString(layout geom.Layout, p geom.Coord, line []float64) float64 {
 	if len(line) < 2 {
 		panic(fmt.Sprintf("Line array must contain at least one vertex: %v", line))
 	}
-	// this handles the case of length = 1
+	// 这处理长度= 1的情况。
 	firstPoint := line[0:2]
 	minDistance := internal.Distance2D(p, firstPoint)
 	stride := layout.Stride()
@@ -216,16 +207,16 @@ func DistanceFromPointToLineString(layout geom.Layout, p geom.Coord, line []floa
 	return minDistance
 }
 
-// DistanceFromLineToLine computes the distance from a line segment line1(Start/End) to a line segment line2(Start/End)
+// DistanceFromLineToLine函数 计算两个线段间的距离
 //
-// Note: NON-ROBUST!
+// Note: 不稳健
 //
-// param line1Start - the start point of line1
-// param line1End - the end point of line1 (must be different to line1Start)
-// param line2Start - the start point of line2
-// param line2End - the end point of line2 (must be different to line2Start)
+// param line1Start - 线段1的起点
+// param line1End - 线段1的终点（不能与起点相同）
+// param line2Start - 线段2的起点
+// param line2End - 线段2的终点（不能与起点相同）
 func DistanceFromLineToLine(line1Start, line1End, line2Start, line2End geom.Coord) float64 {
-	// check for zero-length segments
+	// 检查线段长度是否为0
 	if line1Start.Equal(geom.XY, line1End) {
 		return DistanceFromPointToLine(line1Start, line2Start, line2End)
 	}
@@ -287,20 +278,20 @@ func DistanceFromLineToLine(line1Start, line1End, line2Start, line2End geom.Coor
 			DistanceFromPointToLine(line2Start, line1Start, line1End),
 			DistanceFromPointToLine(line2End, line1Start, line1End))
 	}
-	// segments intersect
+	// 线段相交
 	return 0.0
 }
 
-// SignedArea computes the signed area for a ring. The signed area is positive if the
-// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
-// ring is degenerate or flat.
+// SignedArea函数 计算一个线环的面积。 computes the signed area for a ring. The signed area is positive if the
+// 如果线环是顺时针旋转的则结果为正数，如果逆时针旋转结果为负数。
+//如果环是退化的或平坦的，结果为0
 func SignedArea(layout geom.Layout, ring []float64) float64 {
 	stride := layout.Stride()
 	if len(ring) < 3*stride {
 		return 0.0
 	}
 	sum := 0.0
-	// Based on the Shoelace formula.
+	// 基于Shoelace公式。
 	// http://en.wikipedia.org/wiki/Shoelace_formula
 	x0 := ring[0]
 	lenMinusOnePoint := len(ring) - stride
@@ -313,28 +304,24 @@ func SignedArea(layout geom.Layout, ring []float64) float64 {
 	return sum / 2.0
 }
 
-// IsPointWithinLineBounds calculates if the point p lays within the bounds of the line
-// between end points lineEndpoint1 and lineEndpoint2
+// IsPointWithinLineBounds函数 计算点是否在以lineEndpoint1、lineEndpoint2为线段边界外面
 func IsPointWithinLineBounds(p, lineEndpoint1, lineEndpoint2 geom.Coord) bool {
 	return internal.IsPointWithinLineBounds(p, lineEndpoint1, lineEndpoint2)
 }
 
-// DoLinesOverlap calculates if the bounding boxes of the two lines (line1End1, line1End2) and
-// (line2End1, line2End2) overlap
+// DoLinesOverlap函数 计算的线段的边界是否重叠
 func DoLinesOverlap(line1End1, line1End2, line2End1, line2End2 geom.Coord) bool {
 	return internal.DoLinesOverlap(line1End1, line1End2, line2End1, line2End2)
 }
 
-// Equal checks if the point starting at start one in array coords1 is equal to the
-// point starting at start2 in the array coords2.
-// Only x and y ordinates are compared and x is assumed to be the first ordinate and y as the second
-// This is a utility method intended to be used only when performance is critical as it
-// reduces readability.
+// Equal函数 检查点start1在坐标数组1中是否与点start2以坐标数组2构成的向量相等.
+//只有x和y坐标进行比较，x被假定为第一坐标和y作为第二坐标，
+//这是一种实用方法，只在性能很重要时使用，因为它降低了可读性。
 func Equal(coords1 []float64, start1 int, coords2 []float64, start2 int) bool {
 	return internal.Equal(coords1, start1, coords2, start2)
 }
 
-// Distance calculates the 2d distance between the two coordinates
+// Distance函数 计算两点间的距离
 func Distance(c1, c2 geom.Coord) float64 {
 	return internal.Distance2D(c1, c2)
 }
