@@ -6,8 +6,8 @@ import (
 	"github.com/chengxiaoer/go-geom"
 )
 
-// Centroid calculates the centroid of the geometry.  The centroid may be outside of the geometry depending
-// on the topology of the geometry
+// Centroid函数 计算几何体的质心。、
+//根据几何学的拓扑结构，质心可能在几何之外。
 func Centroid(geometry geom.T) (centroid geom.Coord, err error) {
 	switch t := geometry.(type) {
 	case *geom.Point:
