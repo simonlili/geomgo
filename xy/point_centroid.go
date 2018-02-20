@@ -2,9 +2,9 @@ package xy
 
 import "github.com/chengxiaoer/go-geom"
 
-// PointsCentroid computes the centroid of the point arguments
+// PointsCentroid函数 计算参数传入的点的质心
 //
-// Algorithm: average of all points
+// 算法实现：所有点的平均值
 func PointsCentroid(point *geom.Point, extra ...*geom.Point) geom.Coord {
 	calc := NewPointCentroidCalculator()
 	calc.AddCoord(geom.Coord(point.FlatCoords()))
@@ -16,9 +16,9 @@ func PointsCentroid(point *geom.Point, extra ...*geom.Point) geom.Coord {
 	return calc.GetCentroid()
 }
 
-// MultiPointCentroid computes the centroid of the multi point argument
+// MultiPointCentroid函数 计算的点的集合的质心
 //
-// Algorithm: average of all points in MultiPoint
+// 算法实现：集合中所有点的平均值
 func MultiPointCentroid(point *geom.MultiPoint) geom.Coord {
 	calc := NewPointCentroidCalculator()
 	coords := point.FlatCoords()
@@ -30,11 +30,9 @@ func MultiPointCentroid(point *geom.MultiPoint) geom.Coord {
 	return calc.GetCentroid()
 }
 
-// PointsCentroidFlat computes the centroid of the points in the coordinate array.
-// layout is only used to determine how to find each coordinate.  X-Y are assumed
-// to be the first two elements in each coordinate.
-//
-// Algorithm: average of all points
+// PointsCentroidFlat函数 计算点数组中的点的质心
+// 布局仅用于确定如何查找每个坐标，x-y坐标每个点必须的参数
+// 算法实现: 所有点的平均值
 func PointsCentroidFlat(layout geom.Layout, pointData []float64) geom.Coord {
 	calc := NewPointCentroidCalculator()
 
@@ -50,34 +48,39 @@ func PointsCentroidFlat(layout geom.Layout, pointData []float64) geom.Coord {
 	return calc.GetCentroid()
 }
 
-// PointCentroidCalculator is the data structure that contains the centroid calculation
-// data.  This type cannot be used using its 0 values, it must be created
-// using NewPointCentroid
+// PointCentroidCalculator结构 点质心计算的数据组织结构。
+// 该结构不能使用0值来进行初始化，必须使用 NewPointCentroid 函数来进行创建
 type PointCentroidCalculator struct {
 	ptCount int
 	centSum geom.Coord
 }
 
-// NewPointCentroidCalculator creates a new calculator.
-// Once the coordinates or points can be added to the calculator
-// and GetCentroid can be used to get the current centroid at any point
+// NewPointCentroidCalculator函数 创建点的计算器结构/对象
+// 计算器对象创建后可以继续添加坐标或点
+//使用 GetCentedrid 方法可以获取最新的计算结果
 func NewPointCentroidCalculator() PointCentroidCalculator {
 	return PointCentroidCalculator{centSum: geom.Coord{0, 0}}
 }
 
-// AddPoint adds a point to the calculation
+/**
+*--------------------------------------------------------
+*				PointCentroidCalculator（点质心计算器）相关的方法
+*-----------------------------------------------------------
+*/
+
+// AddPoint方法 向计算器中添加点
 func (calc *PointCentroidCalculator) AddPoint(point *geom.Point) {
 	calc.AddCoord(geom.Coord(point.FlatCoords()))
 }
 
-// AddCoord adds a point to the calculation
+// AddCoord方法 向计算器中添加点坐标
 func (calc *PointCentroidCalculator) AddCoord(point geom.Coord) {
 	calc.ptCount++
 	calc.centSum[0] += point[0]
 	calc.centSum[1] += point[1]
 }
 
-// GetCentroid obtains centroid currently calculated.  Returns a 0 coord if no coords have been added
+// GetCentroid方法 获取最新的质心计算结果. 如果计算器中没有点则返回0
 func (calc *PointCentroidCalculator) GetCentroid() geom.Coord {
 	cent := geom.Coord{0, 0}
 	cent[0] = calc.centSum[0] / float64(calc.ptCount)
