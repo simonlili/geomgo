@@ -6,18 +6,18 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/lineintersection"
 )
 
-// NonRobustLineIntersector is a performant but non robust line intersection implementation.
+// NonRobustLineIntersector is 一个高性能但不健壮的线交点接口
 type NonRobustLineIntersector struct {
 }
 
 func (li NonRobustLineIntersector) computePointOnLineIntersection(data *lineIntersectorData, p, lineStart, lineEnd geom.Coord) {
 
 	/*
-	 *  Coefficients of line eqns.
+	 *  直线方程系数。
 	 */
 	var r float64
 	/*
-	 *  'Sign' values
+	 *  “符号”值
 	 */
 	data.isProper = false
 

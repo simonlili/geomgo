@@ -10,14 +10,14 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/orientation"
 )
 
-// RobustLineIntersector is a less performant implementation when compared to the non robust implementation but
-// provides more consistent results in extreme cases
+// RobustLineIntersector is 是一个不完整的实现相比于非稳健实施，但是
+// 在极端情况下提供更一致的结果
 type RobustLineIntersector struct {
 }
 
 func (intersector RobustLineIntersector) computePointOnLineIntersection(data *lineIntersectorData, point, lineStart, lineEnd geom.Coord) {
 	data.isProper = false
-	// do between check first, since it is faster than the orientation test
+	// 先检查一下，因为它比定位测试快。
 	if internal.IsPointWithinLineBounds(point, lineStart, lineEnd) {
 		if bigxy.OrientationIndex(lineStart, lineEnd, point) == orientation.Collinear && bigxy.OrientationIndex(lineEnd, lineStart, point) == orientation.Collinear {
 			data.isProper = true
@@ -34,15 +34,15 @@ func (intersector RobustLineIntersector) computePointOnLineIntersection(data *li
 func (intersector RobustLineIntersector) computeLineOnLineIntersection(data *lineIntersectorData, line1Start, line1End, line2Start, line2End geom.Coord) {
 	data.isProper = false
 
-	// first try a fast test to see if the envelopes of the lines intersect
+	// 首先尝试一个快速测试，检查是否相交。
 	if !internal.DoLinesOverlap(line1Start, line1End, line2Start, line2End) {
 		data.intersectionType = lineintersection.NoIntersection
 		return
 	}
 
-	// for each endpoint, compute which side of the other segment it lies
-	// if both endpoints lie on the same side of the other segment,
-	// the segments do not intersect
+	// 对于每个结束端点，计算它所在的其他部分的哪一方。
+	// 如果两个结束端点位于另一个段的同一侧，
+	// 则线段不相交
 	line2StartToLine1Orientation := bigxy.OrientationIndex(line1Start, line1End, line2Start)
 	line2EndToLine1Orientation := bigxy.OrientationIndex(line1Start, line1End, line2End)
 
@@ -178,21 +178,17 @@ func isPointOrCollinearIntersection(data *lineIntersectorData, lineStart, lineEn
 }
 
 /**
- * This method computes the actual value of the intersection point.
- * To obtain the maximum precision from the intersection calculation,
- * the coordinates are normalized by subtracting the minimum
- * ordinate values (in absolute value).  This has the effect of
- * removing common significant digits from the calculation to
- * maintain more bits of precision.
+ * 此方法计算交点的实际值。
+ * 通过求交求取最大精度，
+ * 坐标通过减去最小坐标值（绝对值）来进行标准化。
+ *这有从计算中删除普通有效数字以保持更多精度的效果。
  */
 func intersection(data *lineIntersectorData, line1Start, line1End, line2Start, line2End geom.Coord) geom.Coord {
 	intPt := intersectionWithNormalization(line1Start, line1End, line2Start, line2End)
 
 	/**
-	 * Due to rounding it can happen that the computed intersection is
-	 * outside the envelopes of the input segments.  Clearly this
-	 * is inconsistent.
-	 * This code checks this condition and forces a more reasonable answer
+	 * 由于四舍五入，可能计算交点可能在输入的线段外。显然这是不一致的。
+	 * 这段代码检查这种情况，并迫使一个更合理的答案。
 	 */
 	if !isInSegmentEnvelopes(data, intPt) {
 		intPt = centralendpoint.GetIntersection(line1Start, line1End, line2Start, line2End)
@@ -225,10 +221,9 @@ func intersectionWithNormalization(line1Start, line1End, line2Start, line2End ge
 }
 
 /**
- * Computes a segment intersection using homogeneous coordinates.
- * Round-off error can cause the raw computation to fail,
- * (usually due to the segments being approximately parallel).
- * If this happens, a reasonable approximation is computed instead.
+ * 使用齐次坐标计算线段相交。
+ * 舍入误差会导致原始计算失败，（通常是由于线段近似平行）。
+ * 如果出现这种情况，则计算一个合理的近似值。
  */
 func safeHCoordinateIntersection(line1Start, line1End, line2Start, line2End geom.Coord) geom.Coord {
 	intPt, err := hcoords.GetIntersection(line1Start, line1End, line2Start, line2End)
@@ -239,13 +234,12 @@ func safeHCoordinateIntersection(line1Start, line1End, line2Start, line2End geom
 }
 
 /*
- * Test whether a point lies in the envelopes of both input segments.
- * A correctly computed intersection point should return <code>true</code>
- * for this test.
- * Since this test is for debugging purposes only, no attempt is
- * made to optimize the envelope test.
+ * 测试一个点是否位于输入的线段中。
+ * 在测试过程中，正确计算的交点应当返回 <code>true</code>
  *
- * returns true if the input point lies within both input segment envelopes
+ * 由于此测试仅用于调试目的，所以没有尝试优化包含测试。
+ *
+ * 如果输入点位于输入的线段上，则返回true。
  */
 func isInSegmentEnvelopes(data *lineIntersectorData, intersectionPoint geom.Coord) bool {
 	intersection1 := internal.IsPointWithinLineBounds(intersectionPoint, data.inputLines[0][0], data.inputLines[0][1])
@@ -255,9 +249,7 @@ func isInSegmentEnvelopes(data *lineIntersectorData, intersectionPoint geom.Coor
 }
 
 /**
- * Normalize the supplied coordinates to
- * so that the midpoint of their intersection envelope
- * lies at the origin.
+ * 将所提供的坐标规范化，使其相交点位于原点。
  */
 func normalizeToEnvCentre(line1Start, line1End, line2Start, line2End, normPt geom.Coord) {
 	// Note: All these "max" checks are inlined for performance.

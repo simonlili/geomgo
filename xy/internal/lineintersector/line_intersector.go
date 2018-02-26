@@ -7,13 +7,13 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/lineintersection"
 )
 
-// Strategy is the line intersection implementation
+// Strategy is 线交点的接口
 type Strategy interface {
 	computePointOnLineIntersection(data *lineIntersectorData, p, lineEndpoint1, lineEndpoint2 geom.Coord)
 	computeLineOnLineIntersection(data *lineIntersectorData, line1End1, line1End2, line2End1, line2End2 geom.Coord)
 }
 
-// PointIntersectsLine tests if point intersects the line
+// PointIntersectsLine函数 测试点是否在线上
 func PointIntersectsLine(strategy Strategy, point, lineStart, lineEnd geom.Coord) (hasIntersection bool) {
 	intersectorData := &lineIntersectorData{
 		strategy:           strategy,
@@ -29,9 +29,9 @@ func PointIntersectsLine(strategy Strategy, point, lineStart, lineEnd geom.Coord
 	return intersectorData.intersectionType != lineintersection.NoIntersection
 }
 
-// LineIntersectsLine tests if the first line (line1Start,line1End) intersects the second line (line2Start, line2End)
-// and returns a data structure that indicates if there was an intersection, the type of intersection and where the intersection
-// was.  See lineintersection.Result for a more detailed explanation of the result object
+// LineIntersectsLine函数 测试第一条直线(line1Start,line1End)与第二条直线(line2Start, line2End)是否相交。
+// and 返回表示有相交类型、相交点的数据结构
+//查看 lineintersection对象 了解更详细的解释结果
 func LineIntersectsLine(strategy Strategy, line1Start, line1End, line2Start, line2End geom.Coord) lineintersection.Result {
 	intersectorData := &lineIntersectorData{
 		strategy:           strategy,
@@ -57,25 +57,24 @@ func LineIntersectsLine(strategy Strategy, line1Start, line1End, line2Start, lin
 	return lineintersection.NewResult(intersectorData.intersectionType, intersections)
 }
 
-// An internal data structure for containing the data during calculations
+// 计算期间的一个内部数据结构
 type lineIntersectorData struct {
 	// new Coordinate[2][2];
 	inputLines [2][2]geom.Coord
 
-	// if only a point intersection then 0 index coord will contain the intersection point
-	// if co-linear (lines overlay each other) the two coordinates represent the start and end points of the overlapping lines.
+	// 如果只有一个交点，然后0索引下的坐标将包含交叉点
+	// 如果共线（线重叠），两个坐标表示重叠线的起始点和结束点。
 	intersectionPoints [2]geom.Coord
 	intersectionType   lineintersection.Type
 
-	// The indexes of the endpoints of the intersection lines, in order along
-	// the corresponding line
+	// 交叉线端点的索引，沿着相应的行顺序。
 	isProper bool
 	pa, pb   geom.Coord
 	strategy Strategy
 }
 
 /**
- *  RParameter computes the parameter for the point p
+ *  RParameter 计算 the parameter for the point p
  *  in the parameterized equation
  *  of the line from p1 to p2.
  *  This is equal to the 'distance' of p along p1-p2

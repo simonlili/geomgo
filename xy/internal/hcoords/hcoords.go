@@ -7,12 +7,10 @@ import (
 	"github.com/chengxiaoer/go-geom"
 )
 
-// GetIntersection Computes the (approximate) intersection point between two line segments
-// using homogeneous coordinates.
+// GetIntersection 计算 齐次坐标下两线段间的（近似）交点。
 //
-// Note that this algorithm is not numerically stable; i.e. it can produce intersection points which
-// lie outside the envelope of the line segments themselves.  In order to increase the precision of the calculation
-// input points should be normalized before passing them to this routine.
+// 注意，该算法的数值不稳定的； i.e. 它可能产生位于线段之外的交点。
+//为了提高计算的精度，在将这些点传入函数之前，应该对输入点进行标准化。
 func GetIntersection(line1End1, line1End2, line2End1, line2End2 geom.Coord) (geom.Coord, error) {
 	// unrolled computation
 	line1Xdiff := line1End1[1] - line1End2[1]
