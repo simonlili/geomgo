@@ -9,7 +9,7 @@ import (
 	"github.com/chengxiaoer/go-geom/xy/orientation"
 )
 
-// NewRadialSorting creates an implementation sort.Interface which will sort the wrapped coordinate array
+// NewRadialSorting 创建一个实现的排序.Interface which will sort the wrapped coordinate array
 // radially around the focal point.  The comparison is based on the angle and distance
 // from the focal point.
 // First the angle is checked.
@@ -31,7 +31,7 @@ func NewRadialSorting(layout geom.Layout, coordData []float64, focalPoint geom.C
 		dxq := v2[0] - focalPoint[0]
 		dyq := v2[1] - focalPoint[1]
 
-		// points are collinear - check distance
+		// 点是共线 - 检查距离
 		op := dxp*dxp + dyp*dyp
 		oq := dxq*dxq + dyq*dyq
 		return op < oq

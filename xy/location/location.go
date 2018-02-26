@@ -4,24 +4,24 @@ import (
 	"fmt"
 )
 
-// Type enumerates the different topological locations which can occur in a {@link Geometry}.
-// The constants are also used as the row and column indices of DE-9IM {@link IntersectionMatrix}es.
+// Type 枚举了不同拓扑位置，可能是在{@link Geometry}.
+// 常数是用行和列指数DE-9IM {@link IntersectionMatrix}es.
 type Type int
 
 const (
-	// Interior is the location value for the interior of a geometry.
+	// Interior 表明在几何体内部.
 	// Also, DE-9IM row index of the interior of the first geometry and column index of
 	// the interior of the second geometry.
 	Interior Type = iota
-	// Boundary is the location value for the boundary of a geometry.
+	// Boundary 表示在几何体的边界.
 	// Also, DE-9IM row index of the boundary of the first geometry and column index of
 	// the boundary of the second geometry.
 	Boundary
-	// Exterior is the location value for the exterior of a geometry.
+	// Exterior 表示在几何体外部.
 	// Also, DE-9IM row index of the exterior of the first geometry and column index of
 	// the exterior of the second geometry.
 	Exterior
-	// None is used for uninitialized location values.
+	// None 表示未知的拓扑关系.
 	None
 )
 
@@ -41,7 +41,7 @@ func (t Type) String() string {
 	panic(fmt.Sprintf("Unknown location value: %v", int(t)))
 }
 
-// Symbol converts the location value to a location symbol, for example, Exterior => 'e'
+// Symbol方法 转换拓扑关系的表示方式, for example, Exterior => 'e'
 // locationValue
 // Returns either 'e', 'b', 'i' or '-'
 func (t Type) Symbol() rune {

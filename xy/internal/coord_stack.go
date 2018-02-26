@@ -4,29 +4,28 @@ import (
 	"github.com/chengxiaoer/go-geom"
 )
 
-// CoordStack is a simple stack for pushing coordinates (in []float64 form) onto the stack and getting
-// the coordinates back in the normal stack order
-// Must be created with the NewCoordStack method
+// CoordStack 是一个存放坐标的，简单的栈(in []float64 form)可存可取
+// 这些坐标按照正常堆栈的顺序进行返回
+//必须使用 NewCoordStack函数来创建
 type CoordStack struct {
-	// Data is the stack data.  the order is the most recent pushes are at the end of the slice and the oldest
-	// are at the start
+	// Data 是栈的数据.  遵循先进后出、后进先出的规则
 	Data   []float64
 	stride int
 }
 
-// NewCoordStack creates a new stack with the stride indicated in the layout
+// NewCoordStack 根据视图类型创建一个栈
 func NewCoordStack(layout geom.Layout) *CoordStack {
 	return &CoordStack{stride: layout.Stride()}
 }
 
-// Push puts the coordinate at the location idx onto the stack.
+// Push方法 存入一个坐标在栈的指定位置上.
 func (stack *CoordStack) Push(data []float64, idx int) []float64 {
 	c := data[idx : idx+stack.stride]
 	stack.Data = append(stack.Data, c...)
 	return c
 }
 
-// Pop the last pushed coordinate off the stack and return the coordinate
+// Pop方法 弹出栈顶存放的坐标
 func (stack *CoordStack) Pop() ([]float64, int) {
 	numOrds := len(stack.Data)
 	start := numOrds - stack.stride
@@ -35,7 +34,7 @@ func (stack *CoordStack) Pop() ([]float64, int) {
 	return coord, stack.Size()
 }
 
-// Peek returns the most recently pushed coord without modifying the stack
+// Peek方法 返回最新存入的坐标，不改变栈的结构
 func (stack *CoordStack) Peek() []float64 {
 	numOrds := len(stack.Data)
 	start := numOrds - stack.stride
@@ -43,7 +42,7 @@ func (stack *CoordStack) Peek() []float64 {
 	return coord
 }
 
-// Size returns the number of coordinates in the stack
+// Size方法 返回栈中坐标的个数
 func (stack *CoordStack) Size() int {
 	return len(stack.Data) / stack.stride
 }

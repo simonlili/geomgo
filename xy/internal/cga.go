@@ -6,8 +6,7 @@ import (
 	"github.com/chengxiaoer/go-geom"
 )
 
-// IsPointWithinLineBounds calculates if the point p lays within the bounds of the line
-// between end points lineEndpoint1 and lineEndpoint2
+// IsPointWithinLineBounds函数 计算点p是否位于点lineEndpoint1、lineEndpoint2组成的线性边界之外
 func IsPointWithinLineBounds(p, lineEndpoint1, lineEndpoint2 geom.Coord) bool {
 	minx := math.Min(lineEndpoint1[0], lineEndpoint2[0])
 	maxx := math.Max(lineEndpoint1[0], lineEndpoint2[0])
@@ -16,8 +15,7 @@ func IsPointWithinLineBounds(p, lineEndpoint1, lineEndpoint2 geom.Coord) bool {
 	return minx <= p[0] && maxx >= p[0] && miny <= p[1] && maxy >= p[1]
 }
 
-// DoLinesOverlap calculates if the bounding boxes of the two lines (line1End1, line1End2) and
-// (line2End1, line2End2) overlap
+// DoLinesOverlap函数 计算两条线的边界是否重叠
 func DoLinesOverlap(line1End1, line1End2, line2End1, line2End2 geom.Coord) bool {
 
 	min1x := math.Min(line1End1[0], line1End2[0])
@@ -39,11 +37,9 @@ func DoLinesOverlap(line1End1, line1End2, line2End1, line2End2 geom.Coord) bool 
 	return true
 }
 
-// Equal checks if the point starting at start one in array coords1 is equal to the
-// point starting at start2 in the array coords2.
-// Only x and y ordinates are compared and x is assumed to be the first ordinate and y as the second
-// This is a utility method intended to be used only when performance is critical as it
-// reduces readability.
+// Equal函数 检查 在coords1数组中的第start1个坐标与在coords2数组中第start2个坐标是否相同
+// 仅仅 x 和 y 被比较，同时x默认为第一坐标，y为第二个坐标
+// 这是一种实用方法，只在性能至关重要时使用，因为它降低了可读性。
 func Equal(coords1 []float64, start1 int, coords2 []float64, start2 int) bool {
 	if coords1[start1] != coords2[start2] {
 		return false
@@ -56,7 +52,7 @@ func Equal(coords1 []float64, start1 int, coords2 []float64, start2 int) bool {
 	return true
 }
 
-// Distance2D calculates the 2d distance between the two coordinates
+// Distance2D 计算两点在2D视图下的距离
 func Distance2D(c1, c2 geom.Coord) float64 {
 	dx := c1[0] - c2[0]
 	dy := c1[1] - c2[1]

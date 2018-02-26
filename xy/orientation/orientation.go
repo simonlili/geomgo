@@ -2,15 +2,15 @@ package orientation
 
 import "fmt"
 
-// Type enumerates the angular relationship between points and vectors.
+// Type 枚举点与向量之间的角度关系.
 type Type int
 
 const (
-	// Clockwise indicates that the vector or point is clockwise relative to the base vector
+	// Clockwise 表明向量或点相对于参照向量是顺时针方向的。
 	Clockwise Type = iota - 1
-	// Collinear indicates that the vector or point is along the same vector as the base vector
+	// Collinear 表示向量或点与参照向量沿着同一方向。
 	Collinear
-	// CounterClockwise indicates that the vector or point is clockwise relative to the base vector
+	// CounterClockwise 表明向量或点相对于参照向量是逆时针方向的
 	CounterClockwise
 )
 
