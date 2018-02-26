@@ -6,7 +6,7 @@ import (
 	"github.com/chengxiaoer/go-geom"
 )
 
-// Compare compares two coordinates for equality and magnitude
+// Compare 比较两个两个坐标的大小和是否相同
 type Compare interface {
 	IsEquals(x, y geom.Coord) bool
 	IsLess(x, y geom.Coord) bool
@@ -18,8 +18,7 @@ type tree struct {
 	right *tree
 }
 
-// TreeSet sorts the coordinates according to the Compare strategy and removes duplicates as
-// dicated by the Equals function of the Compare strategy
+// TreeSet 使用Compare里面的方法，对坐标进行排序。根据Equals函数移除坐标中的重复项
 type TreeSet struct {
 	compare Compare
 	tree    *tree
@@ -28,7 +27,7 @@ type TreeSet struct {
 	stride  int
 }
 
-// NewTreeSet creates a new TreeSet instance
+// NewTreeSet函数 创建一个新的 TreeSet 实例。
 func NewTreeSet(layout geom.Layout, compare Compare) *TreeSet {
 	return &TreeSet{
 		layout:  layout,
@@ -37,10 +36,15 @@ func NewTreeSet(layout geom.Layout, compare Compare) *TreeSet {
 	}
 }
 
-// Insert adds a new coordinate to the tree set
-// the coordinate must be the same size as the Stride of the layout provided
-// when constructing the TreeSet
-// Returns true if the coordinate was added, false if it was already in the tree
+/**
+*------------------------------
+*				TreeSet  相关的方法
+*---------------------------------
+*/
+// Insert方法 向TreeSet中添加新的坐标
+// 添加的坐标必须具有相同的尸体布局维数
+// Returns true 如果点成功添加
+// Returns false 如果添加的点在 TreeSet 中已经存在
 func (set *TreeSet) Insert(coord geom.Coord) bool {
 	if set.stride == 0 {
 		set.stride = set.layout.Stride()
@@ -57,7 +61,7 @@ func (set *TreeSet) Insert(coord geom.Coord) bool {
 	return added
 }
 
-// ToFlatArray returns an array of floats containing all the coordinates in the TreeSet
+// ToFlatArray方法 返回一个浮点数组包含treeSet中所有的坐标
 func (set *TreeSet) ToFlatArray() []float64 {
 	stride := set.layout.Stride()
 	array := make([]float64, set.size*stride)

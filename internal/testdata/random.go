@@ -7,7 +7,7 @@ import (
 	"github.com/chengxiaoer/go-geom/internal/geomtest"
 )
 
-// Random is a collection of randomly-generated test data.
+// Random 随机生成的测试数据的集合。.
 var Random = []struct {
 	G   geom.T
 	Hex string

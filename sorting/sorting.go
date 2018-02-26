@@ -4,8 +4,7 @@ import (
 	"github.com/chengxiaoer/go-geom"
 )
 
-// FlatCoord is a sort.Interface implementation that will result in sorting the wrapped coords based on the
-// the comparator function
+// FlatCoord 是一个排序接口的实现，这将通过排序函数改变坐标的顺序
 //
 // Note: this data struct cannot be used with its 0 values.  it must be constructed using NewFlatCoordSorting
 type FlatCoord struct {
@@ -15,14 +14,14 @@ type FlatCoord struct {
 	stride int
 }
 
-// IsLess the function used by FlatCoord to sort the coordinate array
-// returns true is v1 is less than v2
+// IsLess 被FlatCoord用于去对坐标数组进行排序
+// returns true 如果v1小于 v2
 type IsLess func(v1, v2 []float64) bool
 
-// IsLess2D is a comparator that compares based on the size of the x and y coords.
+// IsLess2D is 一个比较器，比较基于的X和Y坐标的大小。
 //
-// First the x coordinates are compared.
-// if x coords are equal then the y coords are compared
+// 首先比较 x 坐标
+// 如果 x 坐标相同，然后比较 y 坐标
 func IsLess2D(v1, v2 []float64) bool {
 	if v1[0] < v2[0] {
 		return true
@@ -37,12 +36,12 @@ func IsLess2D(v1, v2 []float64) bool {
 	return false
 }
 
-// NewFlatCoordSorting2D creates a Compare2D based sort.Interface implementation
+// NewFlatCoordSorting2D函数 创建一个基于排序接口实现的 2D比较器。
 func NewFlatCoordSorting2D(layout geom.Layout, coordData []float64) FlatCoord {
 	return NewFlatCoordSorting(layout, coordData, IsLess2D)
 }
 
-// NewFlatCoordSorting creates a sort.Interface implementation based on the Comparator function
+// NewFlatCoordSorting函数 创建一个基于比较函数的排序接口实现
 func NewFlatCoordSorting(layout geom.Layout, coordData []float64, comparator IsLess) FlatCoord {
 	return FlatCoord{
 		isLess: comparator,
