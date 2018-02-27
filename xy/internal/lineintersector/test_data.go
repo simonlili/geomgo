@@ -1,8 +1,8 @@
 package lineintersector
 
 import (
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/lineintersection"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/lineintersection"
 )
 
 type pointOnLineTestData struct {

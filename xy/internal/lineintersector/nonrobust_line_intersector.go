@@ -1,9 +1,9 @@
 package lineintersector
 
 import (
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/internal"
-	"github.com/chengxiaoer/go-geom/xy/lineintersection"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/internal"
+	"github.com/chengxiaoer/geomGo/xy/lineintersection"
 )
 
 // NonRobustLineIntersector is 一个高性能但不健壮的线交点接口

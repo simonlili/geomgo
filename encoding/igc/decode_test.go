@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 func TestDecode(t *testing.T) {

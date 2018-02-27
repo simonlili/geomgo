@@ -9,8 +9,8 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 // dpSafeEpsilon 该值是安全的，比big.Flaot的相对误差的最大精度数大。

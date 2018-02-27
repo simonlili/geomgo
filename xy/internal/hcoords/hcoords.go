@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 // GetIntersection 计算 齐次坐标下两线段间的（近似）交点。

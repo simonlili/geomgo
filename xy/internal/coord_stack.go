@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 // CoordStack 是一个存放坐标的，简单的栈(in []float64 form)可存可取

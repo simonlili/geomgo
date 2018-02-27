@@ -1,9 +1,8 @@
-// Package ewkb implements Extended Well Known Binary encoding and decoding.
+// Package ewkb 实现了 扩展的著名二进制编码和解码。
 // See https://github.com/postgis/postgis/blob/2.1.0/doc/ZMSgeoms.txt.
 //
-// If you are encoding geometries in EWKB to send to PostgreSQL/PostGIS, then
-// you must specify binary_parameters=yes in the data source name that you pass
-// to sql.Open.
+// 如果你正在将几何图形编码成 EWKB ,并存进 PostgreSQL/PostGIS。你必须设置 binary_parameters=yes，在
+//你向 sql.Open传递的数据资源中
 package ewkb
 
 import (
@@ -11,8 +10,8 @@ import (
 	"encoding/binary"
 	"io"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/wkbcommon"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/wkbcommon"
 )
 
 var (
@@ -28,7 +27,7 @@ const (
 	ewkbSRID = 0x20000000
 )
 
-// Read reads an arbitrary geometry from r.
+// Read函数 从 r 中读取任意几何图形.
 func Read(r io.Reader) (geom.T, error) {
 
 	ewkbByteOrder, err := wkbcommon.ReadByte(r)
@@ -186,12 +185,12 @@ func Read(r io.Reader) (geom.T, error) {
 
 }
 
-// Unmarshal unmrshals an arbitrary geometry from a []byte.
+// Unmarshal函数  从data []byte中解码任意图形.
 func Unmarshal(data []byte) (geom.T, error) {
 	return Read(bytes.NewBuffer(data))
 }
 
-// Write writes an arbitrary geometry to w.
+// Write函数 向 w写入任意的几何图形.
 func Write(w io.Writer, byteOrder binary.ByteOrder, g geom.T) error {
 
 	var ewkbByteOrder byte
@@ -307,7 +306,7 @@ func Write(w io.Writer, byteOrder binary.ByteOrder, g geom.T) error {
 
 }
 
-// Marshal marshals an arbitrary geometry to a []byte.
+// Marshal函数 向 a []byte中编码任意几何类型.
 func Marshal(g geom.T, byteOrder binary.ByteOrder) ([]byte, error) {
 	w := bytes.NewBuffer(nil)
 	if err := Write(w, byteOrder, g); err != nil {

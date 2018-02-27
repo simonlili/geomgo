@@ -3,8 +3,8 @@ package xy
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 const piTimes2 = math.Pi * 2

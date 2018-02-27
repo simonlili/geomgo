@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/bigxy"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/bigxy"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 func TestOrientationIndex(t *testing.T) {

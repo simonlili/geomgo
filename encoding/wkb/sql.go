@@ -5,11 +5,11 @@ import (
 	"database/sql/driver"
 	"fmt"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/wkbcommon"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/wkbcommon"
 )
 
-// ErrExpectedByteSlice is returned when a []byte is expected.
+// ErrExpectedByteSlice函数  将返回当 需要一个 []byte时.
 type ErrExpectedByteSlice struct {
 	Value interface{}
 }
@@ -18,49 +18,42 @@ func (e ErrExpectedByteSlice) Error() string {
 	return fmt.Sprintf("wkb: want []byte, got %T", e.Value)
 }
 
-// A Point is a WKB-encoded Point that implements the sql.Scanner and
-// driver.Valuer interfaces.
+// A Point is 是一个WKB编码的 Point,实现了 sql.Scanner和 driver.Valuer接口.
 type Point struct {
 	*geom.Point
 }
 
-// A LineString is a WKB-encoded LineString that implements the sql.Scanner and
-// driver.Valuer interfaces.
+// A LineString 是一个WKB编码的 LineString,实现了 sql.Scanner和 driver.Valuer接口.
 type LineString struct {
 	*geom.LineString
 }
 
-// A Polygon is a WKB-encoded Polygon that implements the sql.Scanner and
-// driver.Valuer interfaces.
+// A Polygon 是一个WKB编码的 Polygon,实现了 sql.Scanner和 driver.Valuer接口.
 type Polygon struct {
 	*geom.Polygon
 }
 
-// A MultiPoint is a WKB-encoded MultiPoint that implements the sql.Scanner and
-// driver.Valuer interfaces.
+// A MultiPoint 是一个WKB编码的 MultiPoint,实现了 sql.Scanner和 driver.Valuer接口.
 type MultiPoint struct {
 	*geom.MultiPoint
 }
 
-// A MultiLineString is a WKB-encoded MultiLineString that implements the
-// sql.Scanner and driver.Valuer interfaces.
+// A MultiLineString 是一个WKB编码的 MultiLineString,实现了 sql.Scanner和 driver.Valuer接口.
 type MultiLineString struct {
 	*geom.MultiLineString
 }
 
-// A MultiPolygon is a WKB-encoded MultiPolygon that implements the sql.Scanner
-// and driver.Valuer interfaces.
+// A MultiPolygon 是一个WKB编码的 MultiPolygon,实现了 sql.Scanner和 driver.Valuer接口.
 type MultiPolygon struct {
 	*geom.MultiPolygon
 }
 
-// A GeometryCollection is a WKB-encoded GeometryCollection that implements the
-// sql.Scanner and driver.Valuer interfaces.
+// A GeometryCollection 是一个WKB编码的 GeometryCollection,实现了 sql.Scanner和 driver.Valuer接口.
 type GeometryCollection struct {
 	*geom.GeometryCollection
 }
 
-// Scan scans from a []byte.
+// Scan方法 从 []byte 中扫描（遍历）.
 func (p *Point) Scan(src interface{}) error {
 	b, ok := src.([]byte)
 	if !ok {
@@ -78,7 +71,7 @@ func (p *Point) Scan(src interface{}) error {
 	return nil
 }
 
-// Value returns the WKB encoding of p.
+// Value方法 返回 p对象的 WKB 编码
 func (p *Point) Value() (driver.Value, error) {
 	return value(p.Point)
 }

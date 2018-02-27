@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom/xy/internal"
+	"github.com/chengxiaoer/geomGo/xy/internal"
 )
 
 func TestIsSameSignAndNonZero(t *testing.T) {

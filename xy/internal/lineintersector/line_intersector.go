@@ -3,8 +3,8 @@ package lineintersector
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/lineintersection"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/lineintersection"
 )
 
 // Strategy is 线交点的接口

@@ -5,11 +5,11 @@ import (
 	"database/sql/driver"
 	"fmt"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/wkbcommon"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/wkbcommon"
 )
 
-// ErrExpectedByteSlice is returned when a []byte is expected.
+// ErrExpectedByteSlice 将被返回,当 []byte 是正确的.
 type ErrExpectedByteSlice struct {
 	Value interface{}
 }
@@ -18,49 +18,42 @@ func (e ErrExpectedByteSlice) Error() string {
 	return fmt.Sprintf("wkb: want []byte, got %T", e.Value)
 }
 
-// A Point is a EWKB-encoded Point that implements the sql.Scanner and
-// driver.Value interfaces.
+// A Point 是 EWKB编码的 点，它实现了sql.Scanner 和 driver.Value 接口
 type Point struct {
 	*geom.Point
 }
 
-// A LineString is a EWKB-encoded LineString that implements the
-// sql.Scanner and driver.Value interfaces.
+// A LineString 是 EWKB编码的单线，它实现了sql.Scanner 和 driver.Value 接口
 type LineString struct {
 	*geom.LineString
 }
 
-// A Polygon is a EWKB-encoded Polygon that implements the sql.Scanner and
-// driver.Value interfaces.
+// A Polygon 是 EWKB编码的多边形对象，它实现了sql.Scanner 和 driver.Value 接口
 type Polygon struct {
 	*geom.Polygon
 }
 
-// A MultiPoint is a EWKB-encoded MultiPoint that implements the
-// sql.Scanner and driver.Value interfaces.
+// A MultiPoint 是 EWKB编码的多点集合，它实现了sql.Scanner 和 driver.Value 接口
 type MultiPoint struct {
 	*geom.MultiPoint
 }
 
-// A MultiLineString is a EWKB-encoded MultiLineString that implements the
-// sql.Scanner and driver.Value interfaces.
+// A MultiLineString 是 WEKB 编码的多线集合，它实现了sql.Scanner 和 driver.Value 接口
 type MultiLineString struct {
 	*geom.MultiLineString
 }
 
-// A MultiPolygon is a EWKB-encoded MultiPolygon that implements the
-// sql.Scanner and driver.Value interfaces.
+// A MultiPolygon 是 WEKB 编码的多边行集合对象，它实现了sql.Scanner 和 driver.Value 接口
 type MultiPolygon struct {
 	*geom.MultiPolygon
 }
 
-// A GeometryCollection is a EWKB-encoded GeometryCollection that implements
-// the sql.Scanner and driver.Value interfaces.
+// A GeometryCollection 是 WEKB 编码的几何图形集合，它实现了sql.Scanner 和 driver.Value 接口
 type GeometryCollection struct {
 	*geom.GeometryCollection
 }
 
-// Scan scans from a []byte.
+// Scan方法 从 a []byte中扫描（遍历）.
 func (p *Point) Scan(src interface{}) error {
 	if src == nil {
 		p.Point = nil
@@ -82,12 +75,12 @@ func (p *Point) Scan(src interface{}) error {
 	return nil
 }
 
-// Valid returns true if p has a value.
+// Valid方法 返回true,如果 p 有值
 func (p *Point) Valid() bool {
 	return p != nil && p.Point != nil
 }
 
-// Value returns the EWKB encoding of p.
+// Value方法 返回 p 对象的 EWKB编码.
 func (p *Point) Value() (driver.Value, error) {
 	if p.Point == nil {
 		return nil, nil

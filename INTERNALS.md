@@ -1,13 +1,13 @@
-# `go-geom` Internals
+# `geomGo` Internals
 
 
 ## Introduction
 
-`go-geom` attempts to implement efficient, standards-compatible OGC-style
+`geomGo` attempts to implement efficient, standards-compatible OGC-style
 geometries for Go.  This document describes some of the key ideas required to
 understand its implementation.
 
-`go-geom` is an evolution of the techniques developed for the [OpenLayers 3
+`geomGo` is an evolution of the techniques developed for the [OpenLayers 3
 geometry library](http://openlayers.org/en/master/apidoc/ol.geom.html),
 designed to efficiently handle large geometries in a resource-constrained,
 garbage-collected environment, but adapted to the Go programming language and
@@ -30,14 +30,14 @@ On top of this, there are multiple combinations of dimensions, e.g. 2D (XY), 3D
 3 geometry types * 2 multi-or-not-multi * 4 different dimensionalities = 24
 distinct types.
 
-Go has neither generics, nor macros, nor a rich type system. `go-geom` attempts
+Go has neither generics, nor macros, nor a rich type system. `geomGo` attempts
 to manage this combinatorial explosion while maintaining an idiomatic Go API,
 implementation efficiency. and high runtime performance.
 
 
 ## Structural similarity
 
-`go-geom` exploits structural similarity between different geometry types to
+`geomGo` exploits structural similarity between different geometry types to
 share code. Consider:
 
 0.  A `Point` consists of a single coordinate. This single coordinate is a
@@ -56,7 +56,7 @@ an unordered collection of `LineString`s.
 
 3.  A `MultiPolygon` is an unordered collection of `Polygon`s.
 
-`go-geom` makes these structural similarities explicit:
+`geomGo` makes these structural similarities explicit:
 
 0. A `Point` is a `geom.Coord`, also known as `geom0`.
 
@@ -68,7 +68,7 @@ an unordered collection of `LineString`s.
 
 3. `MultiPolygon`s are `[][][]geom.Coord`, also known as `geom3`.
 
-Under the hood, `go-geom` uses Go's structural composition to share common
+Under the hood, `geomGo` uses Go's structural composition to share common
 code. For example, `LineString`s, `LinearRing`s, and `MultiPoint`s all embed a
 single anonymous `geom1`.
 
@@ -108,7 +108,7 @@ Typical geometry libraries use multiple levels of nested arrays, e.g. a
 access a single coordinate value, and as different sub-arrays might be stored
 in different parts of memory, is more likely to lead to cache miss.
 
-In contrast, `go-geom` packs all the coordinates for a geometry, whatever its
+In contrast, `geomGo` packs all the coordinates for a geometry, whatever its
 structure, into a single `[]float64`. The underlying array is stored in a
 single blob of memory. Most operations do a linear scan over the array, which
 is particularly cache friendly. There are also fewer objects for the garbage

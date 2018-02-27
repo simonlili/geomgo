@@ -5,10 +5,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/wkbcommon"
-	"github.com/chengxiaoer/go-geom/internal/geomtest"
-	"github.com/chengxiaoer/go-geom/internal/testdata"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/wkbcommon"
+	"github.com/chengxiaoer/geomGo/internal/geomtest"
+	"github.com/chengxiaoer/geomGo/internal/testdata"
 )
 
 func test(t *testing.T, g geom.T, xdr []byte, ndr []byte) {

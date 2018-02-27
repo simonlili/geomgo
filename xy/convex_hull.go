@@ -3,11 +3,11 @@ package xy
 import (
 	"sort"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/bigxy"
-	"github.com/chengxiaoer/go-geom/sorting"
-	"github.com/chengxiaoer/go-geom/xy/internal"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/bigxy"
+	"github.com/chengxiaoer/geomGo/sorting"
+	"github.com/chengxiaoer/geomGo/xy/internal"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 type convexHullCalculator struct {

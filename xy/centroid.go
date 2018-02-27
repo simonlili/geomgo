@@ -3,7 +3,7 @@ package xy
 import (
 	"fmt"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 // Centroid函数 计算几何体的质心。、

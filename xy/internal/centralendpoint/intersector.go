@@ -3,8 +3,8 @@ package centralendpoint
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/internal"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/internal"
 )
 
 // GetIntersection 计算 通过线段端点最中间的两个线段的近似交点。

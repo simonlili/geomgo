@@ -6,8 +6,8 @@ package xyz
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy"
 )
 
 // Distance calculates the distance between the two coordinates in 3d space.

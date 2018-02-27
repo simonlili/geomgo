@@ -1,6 +1,6 @@
 package internal
 
-import "github.com/chengxiaoer/go-geom"
+import "github.com/chengxiaoer/geomGo"
 
 // RING is a real-world geometry for use in tests
 var RING = geom.NewLinearRingFlat(geom.XY, []float64{

@@ -3,8 +3,8 @@ package centralendpoint_test
 import (
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/internal/centralendpoint"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/internal/centralendpoint"
 )
 
 func TestGetIntersection(t *testing.T) {

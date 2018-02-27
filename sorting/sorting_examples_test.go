@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/sorting"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/sorting"
 )
 
 func ExampleNewFlatCoordSorting2D() {

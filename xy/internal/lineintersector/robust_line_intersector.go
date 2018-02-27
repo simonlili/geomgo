@@ -1,13 +1,13 @@
 package lineintersector
 
 import (
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/bigxy"
-	"github.com/chengxiaoer/go-geom/xy/internal"
-	"github.com/chengxiaoer/go-geom/xy/internal/centralendpoint"
-	"github.com/chengxiaoer/go-geom/xy/internal/hcoords"
-	"github.com/chengxiaoer/go-geom/xy/lineintersection"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/bigxy"
+	"github.com/chengxiaoer/geomGo/xy/internal"
+	"github.com/chengxiaoer/geomGo/xy/internal/centralendpoint"
+	"github.com/chengxiaoer/geomGo/xy/internal/hcoords"
+	"github.com/chengxiaoer/geomGo/xy/lineintersection"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 // RobustLineIntersector is 是一个不完整的实现相比于非稳健实施，但是

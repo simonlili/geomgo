@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/chengxiaoer/go-geom/encoding/igc"
+	"github.com/chengxiaoer/geomGo/encoding/igc"
 	"github.com/chengxiaoer/go-kml"
 )
 

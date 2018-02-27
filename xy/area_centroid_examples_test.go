@@ -3,8 +3,8 @@ package xy_test
 import (
 	"fmt"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy"
 )
 
 func ExamplePolygonsCentroid() {

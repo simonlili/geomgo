@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"strconv"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
-// Marshal marshals an arbitrary geometry.
+// Marshal函数 编码任意几何图形.
 func Marshal(g geom.T) (string, error) {
 	b := &bytes.Buffer{}
 	if err := write(b, g); err != nil {
@@ -39,7 +39,7 @@ func write(b *bytes.Buffer, g geom.T) error {
 	layout := g.Layout()
 	switch layout {
 	case geom.NoLayout:
-		// Special case for empty GeometryCollections
+		// 对于空几何图形集合的特殊情况
 		if g, ok := g.(*geom.GeometryCollection); !ok || !g.Empty() {
 			return geom.ErrUnsupportedLayout(layout)
 		}

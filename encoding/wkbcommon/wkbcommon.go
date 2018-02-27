@@ -1,4 +1,4 @@
-// Package wkbcommon contains code common to WKB and EWKB encoding.
+// Package wkbcommon 包含了 WKB and EWKB 编码相关的公共代码.
 package wkbcommon
 
 import (
@@ -19,14 +19,14 @@ var (
 	NDR = binary.LittleEndian
 )
 
-// An ErrUnknownByteOrder is returned when an unknown byte order is encountered.
+// An ErrUnknownByteOrder 将返回当一个位置的 byte顺序是非法的时.
 type ErrUnknownByteOrder byte
 
 func (e ErrUnknownByteOrder) Error() string {
 	return fmt.Sprintf("wkb: unknown byte order: %b", byte(e))
 }
 
-// An ErrUnsupportedByteOrder is returned when an unsupported byte order is encountered.
+// An ErrUnsupportedByteOrder 将返回当遇到不支持的 byte order
 type ErrUnsupportedByteOrder struct{}
 
 func (e ErrUnsupportedByteOrder) Error() string {
@@ -36,21 +36,21 @@ func (e ErrUnsupportedByteOrder) Error() string {
 // A Type is a WKB code.
 type Type uint32
 
-// An ErrUnknownType is returned when an unknown type is encountered.
+// An ErrUnknownType 将返回当遇到未知类型时
 type ErrUnknownType Type
 
 func (e ErrUnknownType) Error() string {
 	return fmt.Sprintf("wkb: unknown type: %d", uint(e))
 }
 
-// An ErrUnsupportedType is returned when an unsupported type is encountered.
+// An ErrUnsupportedType 将返回当遇到不支持的类型时.
 type ErrUnsupportedType Type
 
 func (e ErrUnsupportedType) Error() string {
 	return fmt.Sprintf("wkb: unsupported type: %d", uint(e))
 }
 
-// An ErrUnexpectedType is returned when an unexpected type is encountered.
+// An ErrUnexpectedType 将返回当遇到不符合要求的类型时..
 type ErrUnexpectedType struct {
 	Got  interface{}
 	Want interface{}
@@ -60,20 +60,18 @@ func (e ErrUnexpectedType) Error() string {
 	return fmt.Sprintf("wkb: got %T, want %T", e.Got, e.Want)
 }
 
-// MaxGeometryElements is the maximum number of elements that will be decoded
-// at different levels. Its primary purpose is to prevent corrupt inputs from
-// causing excessive memory allocations (which could be used as a denial of
-// service attack).
-// FIXME This should be Codec-specific, not global
-// FIXME Consider overall per-geometry limit rather than per-level limit
+// MaxGeometryElements 是在不同级别解码的元素的最大数目.其主要目的是防止错误的输入造成过度的内存分配。
+// (担心被用作拒绝服务攻击。).
+// FIXME 这个应当是局部的，不是全局的
+// FIXME 考虑每个几何图形的极限，而不是每一级极限。
 var MaxGeometryElements = [4]uint32{
 	0,
-	1 << 20, // No LineString, LinearRing, or MultiPoint should contain more than 1048576 coordinates
-	1 << 15, // No MultiLineString or Polygon should contain more than 32768 LineStrings or LinearRings
-	1 << 10, // No MultiPolygon should contain more than 1024 Polygons
+	1 << 20, // 没有 LineString, LinearRing, or MultiPoint 可以包含 超过 1048576个坐标
+	1 << 15, // 没有 MultiLineString or Polygon 可以包含超过 32768 个LineStrings or LinearRings
+	1 << 10, // 没有 MultiPolygon 可以包含超过 1024 个 Polygons
 }
 
-// An ErrGeometryTooLarge is returned when the geometry is too large.
+// An ErrGeometryTooLarge 将返回当几何图形过大.
 type ErrGeometryTooLarge struct {
 	Level int
 	N     uint32
@@ -98,7 +96,7 @@ const (
 	TriangleID           = 17
 )
 
-// ReadFlatCoords0 reads flat coordinates 0.
+// ReadFlatCoords0函数 读取平面坐标 0.
 func ReadFlatCoords0(r io.Reader, byteOrder binary.ByteOrder, stride int) ([]float64, error) {
 	coord := make([]float64, stride)
 	if err := ReadFloatArray(r, byteOrder, coord); err != nil {
@@ -107,7 +105,7 @@ func ReadFlatCoords0(r io.Reader, byteOrder binary.ByteOrder, stride int) ([]flo
 	return coord, nil
 }
 
-// ReadFlatCoords1 reads flat coordinates 1.
+// ReadFlatCoords1函数 读取平面坐标 1.
 func ReadFlatCoords1(r io.Reader, byteOrder binary.ByteOrder, stride int) ([]float64, error) {
 	n, err := ReadUInt32(r, byteOrder)
 	if err != nil {
@@ -123,7 +121,7 @@ func ReadFlatCoords1(r io.Reader, byteOrder binary.ByteOrder, stride int) ([]flo
 	return flatCoords, nil
 }
 
-// ReadFlatCoords2 reads flat coordinates 2.
+// ReadFlatCoords2函数 读取平面坐标 2.
 func ReadFlatCoords2(r io.Reader, byteOrder binary.ByteOrder, stride int) ([]float64, []int, error) {
 	n, err := ReadUInt32(r, byteOrder)
 	if err != nil {
@@ -145,12 +143,12 @@ func ReadFlatCoords2(r io.Reader, byteOrder binary.ByteOrder, stride int) ([]flo
 	return flatCoordss, ends, nil
 }
 
-// WriteFlatCoords0 writes flat coordinates 0.
+// WriteFlatCoords0函数 写入平面坐标 0 .
 func WriteFlatCoords0(w io.Writer, byteOrder binary.ByteOrder, coord []float64) error {
 	return WriteFloatArray(w, byteOrder, coord)
 }
 
-// WriteFlatCoords1 writes flat coordinates 1.
+// WriteFlatCoords1函数 写入平面坐标 1 .
 func WriteFlatCoords1(w io.Writer, byteOrder binary.ByteOrder, coords []float64, stride int) error {
 	if err := WriteUInt32(w, byteOrder, uint32(len(coords)/stride)); err != nil {
 		return err
@@ -158,7 +156,7 @@ func WriteFlatCoords1(w io.Writer, byteOrder binary.ByteOrder, coords []float64,
 	return WriteFloatArray(w, byteOrder, coords)
 }
 
-// WriteFlatCoords2 writes flat coordinates 2.
+// WriteFlatCoords2函数 写入平面坐标 2 .
 func WriteFlatCoords2(w io.Writer, byteOrder binary.ByteOrder, flatCoords []float64, ends []int, stride int) error {
 	if err := WriteUInt32(w, byteOrder, uint32(len(ends))); err != nil {
 		return err

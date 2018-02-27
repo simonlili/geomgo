@@ -1,16 +1,15 @@
-// Package ewkbhex implements Extended Well Known Binary encoding and decoding of
-// strings.
+// Package ewkbhex 实现了扩展的著名二进制 字符串的编码和解码
 package ewkbhex
 
 import (
 	"encoding/binary"
 	"encoding/hex"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/ewkb"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/ewkb"
 )
 
-// Encode encodes an arbitrary geometry to a string.
+// Encode 将任意几何图形编码成二进制字符串
 func Encode(g geom.T, byteOrder binary.ByteOrder) (string, error) {
 	ewkb, err := ewkb.Marshal(g, byteOrder)
 	if err != nil {
@@ -19,7 +18,7 @@ func Encode(g geom.T, byteOrder binary.ByteOrder) (string, error) {
 	return hex.EncodeToString(ewkb), nil
 }
 
-// Decode decodes an arbitrary geometry from a string.
+// Decode 从二进制字符串中解码出几何图形.
 func Decode(s string) (geom.T, error) {
 	data, err := hex.DecodeString(s)
 	if err != nil {

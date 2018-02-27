@@ -1,12 +1,12 @@
-// Package kml implements KML encoding.
+// Package kml 实现 KML 的编码.
 package kml
 
 import (
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 	"github.com/chengxiaoer/go-kml"
 )
 
-// Encode encodes an arbitrary geometry.
+// Encode函数  编码任意几何图形.
 func Encode(g geom.T) (kml.Element, error) {
 	switch g := g.(type) {
 	case *geom.Point:
@@ -30,19 +30,19 @@ func Encode(g geom.T) (kml.Element, error) {
 	}
 }
 
-// EncodeLineString encodes a LineString.
+// EncodeLineString函数  编码一个 LineString.
 func EncodeLineString(ls *geom.LineString) kml.Element {
 	flatCoords := ls.FlatCoords()
 	return kml.LineString(kml.CoordinatesFlat(flatCoords, 0, len(flatCoords), ls.Stride(), dim(ls.Layout())))
 }
 
-// EncodeLinearRing encodes a LinearRing.
+// EncodeLinearRing函数  编码一个 LinearRing.
 func EncodeLinearRing(lr *geom.LinearRing) kml.Element {
 	flatCoords := lr.FlatCoords()
 	return kml.LinearRing(kml.CoordinatesFlat(flatCoords, 0, len(flatCoords), lr.Stride(), dim(lr.Layout())))
 }
 
-// EncodeMultiLineString encodes a MultiLineString.
+// EncodeMultiLineString 编码一个MultiLineString.
 func EncodeMultiLineString(mls *geom.MultiLineString) kml.Element {
 	lineStrings := make([]kml.Element, mls.NumLineStrings())
 	flatCoords := mls.FlatCoords()
@@ -57,7 +57,7 @@ func EncodeMultiLineString(mls *geom.MultiLineString) kml.Element {
 	return kml.MultiGeometry(lineStrings...)
 }
 
-// EncodeMultiPoint encodes a MultiPoint.
+// EncodeMultiPoint 编码一个MultiPoint.
 func EncodeMultiPoint(mp *geom.MultiPoint) kml.Element {
 	points := make([]kml.Element, mp.NumPoints())
 	flatCoords := mp.FlatCoords()
@@ -70,7 +70,7 @@ func EncodeMultiPoint(mp *geom.MultiPoint) kml.Element {
 	return kml.MultiGeometry(points...)
 }
 
-// EncodeMultiPolygon encodes a MultiPolygon.
+// EncodeMultiPolygon  编码一个MultiPolygon.
 func EncodeMultiPolygon(mp *geom.MultiPolygon) kml.Element {
 	polygons := make([]kml.Element, mp.NumPolygons())
 	flatCoords := mp.FlatCoords()
@@ -94,13 +94,13 @@ func EncodeMultiPolygon(mp *geom.MultiPolygon) kml.Element {
 	return kml.MultiGeometry(polygons...)
 }
 
-// EncodePoint encodes a Point.
+// EncodePoint 编码一个 Point.
 func EncodePoint(p *geom.Point) kml.Element {
 	flatCoords := p.FlatCoords()
 	return kml.Point(kml.CoordinatesFlat(flatCoords, 0, len(flatCoords), p.Stride(), dim(p.Layout())))
 }
 
-// EncodePolygon encodes a Polygon.
+// EncodePolygon 编码一个 Polygon.
 func EncodePolygon(p *geom.Polygon) kml.Element {
 	boundaries := make([]kml.Element, p.NumLinearRings())
 	stride := p.Stride()
@@ -119,7 +119,7 @@ func EncodePolygon(p *geom.Polygon) kml.Element {
 	return kml.Polygon(boundaries...)
 }
 
-// EncodeGeometryCollection encodes a GeometryCollection.
+// EncodeGeometryCollection函数 创建一个GeometryCollection.
 func EncodeGeometryCollection(g *geom.GeometryCollection) (kml.Element, error) {
 	geometries := make([]kml.Element, g.NumGeoms())
 	for i, g := range g.Geoms() {

@@ -3,7 +3,7 @@ package wkt
 import (
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 func TestMarshal(t *testing.T) {

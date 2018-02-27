@@ -3,9 +3,9 @@ package transform_test
 import (
 	"fmt"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/sorting"
-	"github.com/chengxiaoer/go-geom/transform"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/sorting"
+	"github.com/chengxiaoer/geomGo/transform"
 )
 
 type treeSetExampleCompare struct{}

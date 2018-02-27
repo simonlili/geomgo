@@ -1,6 +1,6 @@
 package xy
 
-import "github.com/chengxiaoer/go-geom"
+import "github.com/chengxiaoer/geomGo"
 
 // PointsCentroid函数 计算参数传入的点的质心
 //

@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xyz"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xyz"
 )
 
 func TestVectorDot(t *testing.T) {

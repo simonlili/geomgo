@@ -8,12 +8,12 @@ import (
 	"testing"
 
 	_ "github.com/lib/pq"
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/ewkb"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/ewkb"
 )
 
 func TestPostGIS(t *testing.T) {
-	db, err := sql.Open("postgres", "postgres://localhost/go-geom-test?binary_parameters=yes&sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://localhost/geomGo-test?binary_parameters=yes&sslmode=disable")
 	if err != nil {
 		t.Fatalf("sql.Open(...) == _, %v, want _, <nil>", err)
 	}

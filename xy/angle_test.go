@@ -3,9 +3,9 @@ package xy_test
 import (
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 func TestAngle(t *testing.T) {

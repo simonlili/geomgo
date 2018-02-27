@@ -1,6 +1,6 @@
 package lineintersection
 
-import "github.com/chengxiaoer/go-geom"
+import "github.com/chengxiaoer/geomGo"
 
 // Type 枚举了两条线的位置关系
 type Type int

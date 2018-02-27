@@ -1,7 +1,7 @@
 package sorting
 
 import (
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 // FlatCoord 是一个排序接口的实现，这将通过排序函数改变坐标的顺序

@@ -3,7 +3,7 @@ package internal
 import (
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 func TestEqual2D(t *testing.T) {

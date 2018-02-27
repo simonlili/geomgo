@@ -3,8 +3,8 @@ package xyz_test
 import (
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xyz"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xyz"
 )
 
 func TestDistance(t *testing.T) {

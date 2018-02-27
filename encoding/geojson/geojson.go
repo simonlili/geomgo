@@ -1,39 +1,39 @@
-// Package geojson implements GeoJSON encoding and decoding.
+// Package geojson 实现了 GeoJSON 的 编码和解码.
 package geojson
 
 import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
-// DefaultLayout is the default layout for empty geometries.
-// FIXME This should be Codec-specific, not global
+// DefaultLayout 是 空几何类型的默认视图
+// FIXME 这是局部属性，而不是全局的。
 var DefaultLayout = geom.XY
 
-// ErrDimensionalityTooLow is returned when the dimensionality is too low.
+// ErrDimensionalityTooLow 将被返回，当维度太低时.
 type ErrDimensionalityTooLow int
 
 func (e ErrDimensionalityTooLow) Error() string {
 	return fmt.Sprintf("geojson: dimensionality too low (%d)", int(e))
 }
 
-// ErrUnsupportedType is returned when the type is unsupported.
+// ErrUnsupportedType 将会被返回，当几何类型不支持时.
 type ErrUnsupportedType string
 
 func (e ErrUnsupportedType) Error() string {
 	return fmt.Sprintf("geojson: unsupported type: %s", string(e))
 }
 
-// A Geometry is a geometry in GeoJSON format.
+// A Geometry 是一个几何图形的 GeoJSON 格式化对象.
 type Geometry struct {
 	Type        string           `json:"type"`
 	Coordinates *json.RawMessage `json:"coordinates,omitempty"`
 	Geometries  []*Geometry      `json:"geometries,omitempty"`
 }
 
-// A Feature is a GeoJSON Feature.
+// A Feature GeoJSON 特征.
 type Feature struct {
 	ID         string
 	Geometry   geom.T
@@ -47,7 +47,7 @@ type geojsonFeature struct {
 	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
-// A FeatureCollection is a GeoJSON FeatureCollection.
+// A FeatureCollection 是 一个 GeoJSON 特征集合.
 type FeatureCollection struct {
 	Features []*Feature
 }
@@ -93,7 +93,7 @@ func guessLayout3(coords3 [][][]geom.Coord) (geom.Layout, error) {
 	return guessLayout2(coords3[0])
 }
 
-// Decode decodes g to a geometry.
+// Decode方法 将g 解码为一个几何类型.
 func (g *Geometry) Decode() (geom.T, error) {
 	switch g.Type {
 	case "Point":
@@ -193,7 +193,7 @@ func (g *Geometry) Decode() (geom.T, error) {
 	}
 }
 
-// Encode encodes g as a GeoJSON geometry.
+// Encode方 将g编码为 GeoJSON 几何图形.
 func Encode(g geom.T) (*Geometry, error) {
 	switch g := g.(type) {
 	case *geom.Point:
@@ -274,7 +274,7 @@ func Encode(g geom.T) (*Geometry, error) {
 	}
 }
 
-// Marshal marshals an arbitrary geometry to a []byte.
+// Marshal函数 编码任意几何图像为 []byte.
 func Marshal(g geom.T) ([]byte, error) {
 	geojson, err := Encode(g)
 	if err != nil {
@@ -331,7 +331,7 @@ func unmarshalCoords3(data []byte) (geom.Layout, [][][]geom.Coord, error) {
 	return layout, coords, nil
 }
 
-// Unmarshal unmarshalls a []byte to an arbitrary geometry.
+// Unmarshal函数 将[]byte 解码为geometry
 func Unmarshal(data []byte, g *geom.T) error {
 	gg := &Geometry{}
 	if err := json.Unmarshal(data, gg); err != nil {
@@ -400,7 +400,7 @@ func Unmarshal(data []byte, g *geom.T) error {
 	}
 }
 
-// MarshalJSON implements json.Marshaler.MarshalJSON.
+// MarshalJSON方法 实现 json.Marshaler.MarshalJSON.
 func (f *Feature) MarshalJSON() ([]byte, error) {
 	geometry, err := Encode(f.Geometry)
 	if err != nil {
@@ -414,7 +414,7 @@ func (f *Feature) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// UnmarshalJSON implements json.Unmarshaler.UnmarshalJSON.
+// UnmarshalJSON 实现 json.Unmarshaler.UnmarshalJSON.
 func (f *Feature) UnmarshalJSON(data []byte) error {
 	var gf geojsonFeature
 	if err := json.Unmarshal(data, &gf); err != nil {
@@ -433,7 +433,7 @@ func (f *Feature) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements json.Marshaler.MarshalJSON.
+// MarshalJSON 实现 json.Marshaler.MarshalJSON.
 func (fc *FeatureCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&geojsonFeatureCollection{
 		Type:     "FeatureCollection",

@@ -6,10 +6,10 @@ import (
 	"math"
 	"time"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
-// An Encoder is an IGC encoder.
+// An Encoder 是 IGC 编码器.
 type Encoder struct {
 	a string
 	w io.Writer
@@ -28,7 +28,7 @@ func clamp(x, min, max int) int {
 	}
 }
 
-// NewEncoder returns a new Encoder that writes to w.
+// NewEncoder函数 返回一个新的编码器 that writes to w.
 func NewEncoder(w io.Writer, options ...EncoderOption) *Encoder {
 	e := &Encoder{w: w}
 	for _, o := range options {
@@ -37,7 +37,7 @@ func NewEncoder(w io.Writer, options ...EncoderOption) *Encoder {
 	return e
 }
 
-// Encode encodes a LineString.
+// Encode方法 编码一个 LineString.
 func (enc *Encoder) Encode(ls *geom.LineString) error {
 	if enc.a != "" {
 		if _, err := fmt.Fprintf(enc.w, "A%s\n", enc.a); err != nil {

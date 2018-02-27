@@ -1,4 +1,4 @@
-// Package igc implements an IGC parser.
+// Package igc 实现 an IGC 分析器.
 package igc
 
 import (
@@ -10,31 +10,31 @@ import (
 	"strings"
 	"time"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 var (
-	// ErrInvalidCharacter is returned when an invalid character is encountered.
+	// ErrInvalidCharacter 将返回当遇到无效字符时.
 	ErrInvalidCharacter = errors.New("invalid character")
-	// ErrInvalidCharactersBeforeARecord is returned when invalid characters are encountered before the A record.
+	// ErrInvalidCharactersBeforeARecord 将返回在 A record之前遇到无效字符时。
 	ErrInvalidCharactersBeforeARecord = errors.New("invalid characters before A record")
-	// ErrInvalidBRecord is returned when an invalid B record is encountered.
+	// ErrInvalidBRecord 遇到无效的B记录时将返回.
 	ErrInvalidBRecord = errors.New("invalid B record")
-	// ErrInvalidHRecord is returned when an invalid H record is encountered.
+	// ErrInvalidHRecord 遇到无效的H记录时将返回.
 	ErrInvalidHRecord = errors.New("invalid H record")
-	// ErrInvalidIRecord is returned when an invalid I record is encountered.
+	// ErrInvalidIRecord 遇到无效的I记录时将返回.
 	ErrInvalidIRecord = errors.New("invalid I record")
-	// ErrEmptyLine is returned when an empty line is encountered.
+	// ErrEmptyLine 当遇到无效的空 line 时将返回.
 	ErrEmptyLine = errors.New("empty line")
-	// ErrMissingARecord is returned when no A record is found.
+	// ErrMissingARecord 当找不到 A record 时将返回.
 	ErrMissingARecord = errors.New("missing A record")
-	// ErrOutOfRange is returned when a value is out of range.
+	// ErrOutOfRange 当值超过范围时将返回
 	ErrOutOfRange = errors.New("out of range")
 
 	hRegexp = regexp.MustCompile(`H([FP])([A-Z]{3})(.*?):(.*?)\s*\z`)
 )
 
-// An Errors is a map of errors encountered at each line.
+// An Errors is 当遍历每行出错时.
 type Errors map[int]error
 
 // A Header is an IGC header.
@@ -45,7 +45,7 @@ type Header struct {
 	Value    string
 }
 
-// A T represents a parsed IGC file.
+// A T 代表IGC文件解析.
 type T struct {
 	Headers    []Header
 	LineString *geom.LineString
@@ -59,7 +59,7 @@ func (es Errors) Error() string {
 	return strings.Join(ss, "\n")
 }
 
-// parseDec parses a decimal value in s[start:stop].
+// parseDec 解析十进制值在s[start:stop]中.
 func parseDec(s string, start, stop int) (int, error) {
 	result := 0
 	neg := false
@@ -80,8 +80,7 @@ func parseDec(s string, start, stop int) (int, error) {
 	return result, nil
 }
 
-// parseDecInRange parsers a decimal value in s[start:stop], and returns an
-// error if it is outside the range [min, max).
+// parseDecInRange函数 解析十进制值 s[start:stop], 如果超出[min,max)时返回错误.
 func parseDecInRange(s string, start, stop, min, max int) (int, error) {
 	if result, err := parseDec(s, start, stop); err != nil {
 		return result, err
@@ -92,7 +91,7 @@ func parseDecInRange(s string, start, stop, min, max int) (int, error) {
 	}
 }
 
-// parser contains the state of a parser.
+// parser  包含这个解析器的状态
 type parser struct {
 	headers           []Header
 	coords            []float64
@@ -105,12 +104,12 @@ type parser struct {
 	bRecordLen        int
 }
 
-// newParser creates a new parser.
+// newParser函数 创建一个新的解析器.
 func newParser() *parser {
 	return &parser{bRecordLen: 35}
 }
 
-// parseB parses a B record from line and updates the state of p.
+// parseB方法 从 line 中解析一个 B record,同时更新 解析器的状态.
 func (p *parser) parseB(line string) error {
 
 	if len(line) != p.bRecordLen {
@@ -151,8 +150,8 @@ func (p *parser) parseB(line string) error {
 	if latDeg, err = parseDecInRange(line, 7, 9, 0, 90); err != nil {
 		return err
 	}
-	// special case: latMilliMin should be in the range [0, 60000) but a number of flight recorders generate latMilliMins of 60000
-	// FIXME check what happens in negative (S, W) hemispheres
+	// 特殊情况: latMilliMin 应当在[0, 60000)的范围内， but a number of flight recorders generate latMilliMins of 60000
+	// FIXME check what happens in negative (S, W) hemispheres(半球)
 	if latMilliMin, err = parseDecInRange(line, 9, 14, 0, 60000+1); err != nil {
 		return err
 	}
@@ -212,7 +211,7 @@ func (p *parser) parseB(line string) error {
 
 }
 
-// parseB parses an H record from line and updates the state of p.
+// parseH方法 从line 中解析一个 H record，并更新 解析器p 的状态.
 func (p *parser) parseH(line string) error {
 	if m := hRegexp.FindStringSubmatch(line); m != nil {
 		p.headers = append(p.headers, Header{
@@ -230,7 +229,7 @@ func (p *parser) parseH(line string) error {
 	}
 }
 
-// parseB parses an HFDTE record from line and updates the state of p.
+// parseHFDTE 从line 中解析一个 HFDTE record，并更新 解析器p 的状态.
 func (p *parser) parseHFDTE(line string) error {
 	var err error
 	var day, month, year int
@@ -246,7 +245,7 @@ func (p *parser) parseHFDTE(line string) error {
 	if year, err = parseDec(line, 9, 11); err != nil {
 		return err
 	}
-	// FIXME check for invalid dates
+	// FIXME 检查无效数据
 	p.day = day
 	p.month = month
 	if year < 70 {
@@ -257,7 +256,7 @@ func (p *parser) parseHFDTE(line string) error {
 	return nil
 }
 
-// parseB parses an I record from line and updates the state of p.
+// parseI 从line 中解析一个 I record，并更新 解析器p 的状态..
 func (p *parser) parseI(line string) error {
 	var err error
 	var n int
@@ -294,7 +293,7 @@ func (p *parser) parseI(line string) error {
 	return nil
 }
 
-// parseLine parses a single record from line and updates the state of p.
+// parseLine 从 line 中解析 single reord,同时更新解析器 p 的状态.
 func (p *parser) parseLine(line string) error {
 	switch line[0] {
 	case 'B':
@@ -308,7 +307,7 @@ func (p *parser) parseLine(line string) error {
 	}
 }
 
-// doParse reads r, parsers all the records it finds, updating the state of p.
+// doParse函数 读取 r, 解析它所能找到的所有记录, 并更新解析器 p 的状态.
 func doParse(r io.Reader) (*parser, Errors) {
 	errors := make(Errors)
 	p := newParser()
@@ -327,12 +326,12 @@ func doParse(r io.Reader) (*parser, Errors) {
 			if c := line[0]; c == 'A' {
 				foundA = true
 			} else if 'A' <= c && c <= 'Z' {
-				// All records that start with an uppercase character must be valid.
+				// 所有记录必须以大写字符开头，才是有效的。.
 				leadingNoise = true
 				continue
 			} else if i := strings.IndexRune(line, 'A'); i != -1 {
-				// Strip any leading noise.
-				// The noise must include at least one unprintable character (like XOFF or a fragment of a Unicode BOM).
+				// 剥去任何噪音。
+				// 噪声必须包含至少一个不可打印字符 (like XOFF or a fragment of a Unicode BOM).
 				for _, c := range line[:i] {
 					if !(c == ' ' || ('A' <= c && c <= 'Z')) {
 						foundA = true
@@ -351,7 +350,7 @@ func doParse(r io.Reader) (*parser, Errors) {
 	return p, errors
 }
 
-// Read reads a igc.T from r, which should contain IGC records.
+// Read 读取 a igc.T from r, 其中应包含IGC的记录.
 func Read(r io.Reader) (*T, error) {
 	p, errors := doParse(r)
 	if len(errors) != 0 {

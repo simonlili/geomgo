@@ -3,8 +3,8 @@ package hcoords_test
 import (
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/internal/hcoords"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/internal/hcoords"
 )
 
 func TestGetIntersection(t *testing.T) {

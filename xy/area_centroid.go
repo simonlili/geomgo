@@ -3,8 +3,8 @@ package xy
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/internal"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/internal"
 )
 
 // PolygonsCentroid函数 计算一个多边形的几何中心

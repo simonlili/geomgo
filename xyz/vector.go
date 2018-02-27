@@ -3,7 +3,7 @@ package xyz
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 // VectorDot 计算两向量的数量积

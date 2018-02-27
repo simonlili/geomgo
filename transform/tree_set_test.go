@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/sorting"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/sorting"
 )
 
 func TestTree(t *testing.T) {

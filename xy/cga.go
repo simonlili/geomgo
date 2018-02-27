@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/bigxy"
-	"github.com/chengxiaoer/go-geom/xy/internal"
-	"github.com/chengxiaoer/go-geom/xy/internal/lineintersector"
-	"github.com/chengxiaoer/go-geom/xy/orientation"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/bigxy"
+	"github.com/chengxiaoer/geomGo/xy/internal"
+	"github.com/chengxiaoer/geomGo/xy/internal/lineintersector"
+	"github.com/chengxiaoer/geomGo/xy/orientation"
 )
 
 // OrientationIndex函数 返回一个点关于一个特殊的向量指向的方向的索引

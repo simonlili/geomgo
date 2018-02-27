@@ -3,7 +3,7 @@ package internal
 import (
 	"math"
 
-	"github.com/chengxiaoer/go-geom"
+	"github.com/chengxiaoer/geomGo"
 )
 
 // IsPointWithinLineBounds函数 计算点p是否位于点lineEndpoint1、lineEndpoint2组成的线性边界之外

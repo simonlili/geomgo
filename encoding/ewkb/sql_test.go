@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/internal/geomtest"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/internal/geomtest"
 )
 
 var (

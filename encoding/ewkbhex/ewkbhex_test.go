@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/encoding/ewkb"
-	"github.com/chengxiaoer/go-geom/encoding/wkbcommon"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/encoding/ewkb"
+	"github.com/chengxiaoer/geomGo/encoding/wkbcommon"
 )
 
 func test(t *testing.T, g geom.T, xdr string, ndr string) {

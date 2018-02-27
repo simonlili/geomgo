@@ -5,8 +5,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/sorting"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/sorting"
 )
 
 func TestCompare2D(t *testing.T) {

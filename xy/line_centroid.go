@@ -1,8 +1,8 @@
 package xy
 
 import (
-	"github.com/chengxiaoer/go-geom"
-	"github.com/chengxiaoer/go-geom/xy/internal"
+	"github.com/chengxiaoer/geomGo"
+	"github.com/chengxiaoer/geomGo/xy/internal"
 )
 
 // LinesCentroid函数 计算参数传入的所有线状要素的质心
