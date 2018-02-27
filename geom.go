@@ -129,6 +129,8 @@ type T interface {
 	Ends() []int
 	Endss() [][]int
 	SRID() int
+	TransformXY(func(float64, float64) (float64, float64)) error
+	TransformXYZ(func(float64, float64, float64) (float64, float64, float64)) error
 }
 /**
 *------------------------------
