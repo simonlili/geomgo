@@ -23,7 +23,7 @@ func NewLineStringFlat(layout Layout, flatCoords []float64) *LineString {
 *------------------------------
 *				Linestring（点）相关的方法
 *---------------------------------
-*/
+ */
 
 // Area方法 返回 Linestring的面积
 func (ls *LineString) Area() float64 {
@@ -107,6 +107,12 @@ func (ls *LineString) Swap(ls2 *LineString) {
 }
 
 // Points方法 返回一个MuitiPoint，其中是linestring的控制点
-func (ls *LineString)Points()  {
-	
+func (ls *LineString) Points() *MultiPoint {
+
+	var multipoint = NewMultiPoint(ls.layout)
+	//获取LineString所有坐标
+	multipoint.setCoords(ls.Coords())
+
+	return multipoint
+
 }
