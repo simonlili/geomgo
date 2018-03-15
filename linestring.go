@@ -105,3 +105,8 @@ func (ls *LineString) SubLineString(start, stop int) *LineString {
 func (ls *LineString) Swap(ls2 *LineString) {
 	*ls, *ls2 = *ls2, *ls
 }
+
+// Points方法 返回一个MuitiPoint，其中是linestring的控制点
+func (ls *LineString)Points()  {
+	
+}
